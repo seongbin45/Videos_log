@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Reference Sheets — 한중 문화 비교 프로젝트</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --kr-bg: #f5f0eb;
+  --kr-accent: #2b4aff;
+  --kr-dark: #0d0d1a;
+  --kr-mid: #6c6c8a;
+  --cn-bg: #0d0a0a;
+  --cn-accent: #e8190a;
+  --cn-gold: #d4a843;
+  --cn-light: #f2e8d9;
+  --font-display: 'DM Sans', 'Noto Sans KR', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { background: #111; font-family: var(--font-display); }
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; gap: 0;
+  background: #111;
+  border-bottom: 1px solid #333;
+}
+.nav-btn {
+  flex: 1; padding: 14px; border: none; cursor: pointer;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; transition: all 0.2s;
+}
+.nav-btn.kr { background: #1a1a2e; color: #6c6c8a; }
+.nav-btn.kr.active, .nav-btn.kr:hover { background: var(--kr-accent); color: #fff; }
+.nav-btn.cn { background: #1a0d0d; color: #7a4444; }
+.nav-btn.cn.active, .nav-btn.cn:hover { background: var(--cn-accent); color: #fff; }
+
+/* SHEET WRAPPER */
+.sheet { display: none; min-height: 100vh; }
+.sheet.active { display: block; }
+
+/* ═══ KOREAN SHEET ═══ */
+.kr-sheet {
+  background: var(--kr-bg);
+  display: grid;
+  grid-template-columns: 260px 1fr 280px;
+  grid-template-rows: auto auto auto;
+  gap: 0;
+  min-height: 100vh;
+}
+
+/* KR Left panel */
+.kr-left {
+  grid-row: 1 / 4;
+  background: var(--kr-dark);
+  color: white;
+  padding: 32px 24px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+.kr-char-name {
+  font-size: 36px; font-weight: 600; line-height: 1;
+  letter-spacing: -0.02em;
+}
+.kr-char-sub {
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--kr-accent); text-transform: uppercase; margin-top: 4px;
+}
+.kr-divider { height: 1px; background: #2a2a3e; }
+.kr-info-row { display: flex; flex-direction: column; gap: 3px; }
+.kr-info-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #6c6c8a; font-family: var(--font-mono); }
+.kr-info-value { font-size: 13px; font-weight: 400; color: #e8e8f0; }
+
+.palette-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.swatch { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.15); position: relative; cursor: default; }
+.swatch::after {
+  content: attr(data-hex);
+  position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+  font-size: 8px; font-family: var(--font-mono); color: #6c6c8a; white-space: nowrap;
+}
+
+.keyword-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
+.kw-tag {
+  font-size: 9px; font-family: var(--font-mono); letter-spacing: 0.08em;
+  padding: 3px 8px; border-radius: 2px;
+  background: rgba(43,74,255,0.15); color: var(--kr-accent);
+  border: 1px solid rgba(43,74,255,0.3);
+}
+
+/* KR Center — turnaround */
+.kr-center { grid-column: 2; grid-row: 1; padding: 24px 20px 0; }
+.section-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--kr-mid); margin-bottom: 12px;
+}
+.turnaround-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.view-box {
+  background: white;
+  border: 1px solid #e0d8d0;
+  border-radius: 4px;
+  aspect-ratio: 3/5;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.view-box-label {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 6px 8px;
+  background: #f5f0eb; border-bottom: 1px solid #e0d8d0;
+  color: var(--kr-mid);
+}
+.view-box-body {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  padding: 8px; gap: 4px;
+  position: relative;
+}
+.silhouette {
+  width: 60%; flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.figure-placeholder {
+  width: 100%; height: 100%;
+  border: 1.5px dashed #c0b8b0;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 4px;
+  background: linear-gradient(180deg, #faf8f5 0%, #f0ece6 100%);
+}
+.figure-icon { font-size: 28px; opacity: 0.3; }
+.view-prompt-mini {
+  font-size: 8px; color: #aaa; text-align: center; padding: 0 4px;
+  font-family: var(--font-mono); line-height: 1.3;
+}
+
+/* KR expressions */
+.expr-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.expr-box {
+  background: white; border: 1px solid #e0d8d0; border-radius: 4px;
+  aspect-ratio: 1/1.2;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  overflow: hidden;
+}
+.expr-face {
+  flex: 1; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  background: linear-gradient(180deg, #faf8f5 0%, #f0ece6 100%);
+}
+.expr-label {
+  font-size: 8px; font-family: var(--font-mono); letter-spacing: 0.1em;
+  padding: 4px; text-align: center; color: var(--kr-mid);
+  background: white; width: 100%;
+  border-top: 1px solid #e8e0d8;
+}
+
+/* KR Right panel */
+.kr-right { grid-column: 3; grid-row: 1 / 3; padding: 24px 20px; }
+.prompt-card {
+  background: white; border: 1px solid #e0d8d0; border-radius: 6px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.prompt-card-title {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--kr-accent); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.prompt-card-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--kr-accent); flex-shrink: 0; }
+.prompt-text {
+  font-size: 9.5px; line-height: 1.65; color: #444;
+  font-family: var(--font-mono); background: #f5f2ee;
+  padding: 8px; border-radius: 3px;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+/* KR Bottom strips */
+.kr-bottom-l { grid-column: 2; grid-row: 2; padding: 16px 20px 24px; }
+.kr-bottom-r { grid-column: 2 / 4; grid-row: 3; padding: 0 20px 24px; }
+.costume-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.costume-item {
+  background: white; border: 1px solid #e0d8d0; border-radius: 4px;
+  padding: 10px; display: flex; flex-direction: column; gap: 4px;
+}
+.costume-icon { font-size: 20px; }
+.costume-name { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--kr-mid); }
+.costume-desc { font-size: 10px; color: #555; line-height: 1.4; }
+
+/* ═══ CHINESE SHEET ═══ */
+.cn-sheet {
+  background: var(--cn-bg);
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  grid-template-rows: auto auto auto;
+  gap: 0;
+  min-height: 100vh;
+}
+
+.cn-top-bar {
+  grid-column: 1 / 3;
+  border-bottom: 1px solid #2a1a1a;
+  padding: 28px 32px 20px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.cn-char-name { font-size: 48px; font-weight: 600; color: var(--cn-light); letter-spacing: -0.02em; line-height: 1; }
+.cn-char-cn { font-size: 16px; color: var(--cn-accent); font-weight: 300; margin-top: 4px; }
+.cn-char-tagline { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #7a4444; }
+
+/* CN left content */
+.cn-left { grid-column: 1; padding: 24px 32px; }
+.cn-section-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #7a4444; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.cn-section-label::after { content: ''; flex: 1; height: 1px; background: #2a1a1a; }
+
+.cn-turnaround { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+.cn-view-box {
+  background: #1a0d0d;
+  border: 1px solid #2a1a1a;
+  border-radius: 4px;
+  aspect-ratio: 3/5;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.cn-view-label {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase; padding: 7px 10px;
+  color: var(--cn-accent); border-bottom: 1px solid #2a1a1a;
+}
+.cn-view-body {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-end; padding: 8px; gap: 4px;
+}
+.cn-figure {
+  width: 60%; flex: 1;
+  border: 1.5px dashed #3a2020; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 4px;
+  background: linear-gradient(180deg, #1e0e0e 0%, #150808 100%);
+}
+.cn-figure-icon { font-size: 28px; opacity: 0.2; }
+.cn-view-mini {
+  font-size: 8px; color: #5a3333; text-align: center; padding: 0 4px;
+  font-family: var(--font-mono); line-height: 1.3;
+}
+
+.cn-expr-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.cn-expr-box {
+  background: #1a0d0d; border: 1px solid #2a1a1a; border-radius: 4px;
+  aspect-ratio: 1/1.2;
+  display: flex; flex-direction: column; align-items: center; overflow: hidden;
+}
+.cn-expr-face {
+  flex: 1; width: 100%;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  background: linear-gradient(180deg, #1e0e0e 0%, #150808 100%);
+}
+.cn-expr-label {
+  font-size: 8px; font-family: var(--font-mono); letter-spacing: 0.1em;
+  padding: 4px; text-align: center; color: #7a4444;
+  border-top: 1px solid #2a1a1a; width: 100%;
+}
+
+/* CN right panel */
+.cn-right { grid-column: 2; padding: 24px 24px 24px 12px; }
+
+.cn-info-block { margin-bottom: 16px; }
+.cn-info-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #7a4444; margin-bottom: 4px; }
+.cn-info-value { font-size: 12px; color: var(--cn-light); line-height: 1.5; }
+
+.cn-prompt-card {
+  background: #1a0d0d; border: 1px solid #2a1a1a; border-radius: 6px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+.cn-prompt-title {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--cn-accent); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 6px;
+}
+.cn-prompt-title::before { content: ''; width: 5px; height: 5px; background: var(--cn-accent); flex-shrink: 0; }
+.cn-prompt-text {
+  font-size: 9px; line-height: 1.65; color: #c4a0a0;
+  font-family: var(--font-mono); background: #0d0505;
+  padding: 8px; border-radius: 3px;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+.cn-palette-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.cn-swatch { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #2a1a1a; position: relative; }
+.cn-swatch::after {
+  content: attr(data-hex);
+  position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%);
+  font-size: 7px; font-family: var(--font-mono); color: #5a3333; white-space: nowrap;
+}
+
+.cn-bottom { grid-column: 1 / 3; padding: 0 32px 32px; border-top: 1px solid #2a1a1a; }
+.cn-costume-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; }
+.cn-costume-item {
+  background: #1a0d0d; border: 1px solid #2a1a1a; border-radius: 4px;
+  padding: 10px; display: flex; flex-direction: column; gap: 4px;
+}
+.cn-costume-icon { font-size: 18px; }
+.cn-costume-name { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a4444; }
+.cn-costume-desc { font-size: 10px; color: #c4a0a0; line-height: 1.4; }
+
+/* ANCHOR SECTION */
+.anchor-section {
+  background: #0a0a0a; border-top: 1px solid #333;
+  padding: 20px 32px; display: none;
+}
+.anchor-section.active { display: block; }
+.anchor-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 10px; }
+.anchor-code {
+  background: #111; border: 1px solid #222; border-radius: 4px;
+  padding: 12px 14px; font-family: var(--font-mono); font-size: 10px;
+  color: #4ade80; line-height: 1.7; white-space: pre-wrap; word-break: break-word;
+}
+
+/* BOTTOM WATERMARK */
+.watermark {
+  text-align: right; padding: 12px 32px;
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-btn kr active" onclick="switchSheet('kr')">🇰🇷 Korean Student — 한국 학생</button>
+  <button class="nav-btn cn" onclick="switchSheet('cn')">🇨🇳 Chinese Student — 中国学生</button>
+</nav>
+
+<!-- ══════════════════════════════
+     KOREAN SHEET
+══════════════════════════════ -->
+<div class="sheet kr-sheet active" id="kr">
+
+  <!-- LEFT INFO PANEL -->
+  <div class="kr-left">
+    <div>
+      <div class="kr-char-name">Korean<br>Student</div>
+      <div class="kr-char-sub">한중 문화 비교 · 제3조</div>
+    </div>
+    <div class="kr-divider"></div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">캐릭터 타입</div>
+      <div class="kr-info-value">중학생 (Middle School)</div>
+    </div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">스타일</div>
+      <div class="kr-info-value">픽사 3D 애니메이션</div>
+    </div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">헤어</div>
+      <div class="kr-info-value">짧은 검정 단발 (숄더 위)</div>
+    </div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">교복 (씬 1)</div>
+      <div class="kr-info-value">네이비 자켓 + 흰 셔츠 + 검정 치마 (교복)</div>
+    </div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">복장 (씬 2)</div>
+      <div class="kr-info-value">흰 티셔츠 + 청바지 (사복)</div>
+    </div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">배경 (씬 1)</div>
+      <div class="kr-info-value">교실 — 창문 빛 + 나무 책상</div>
+    </div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">배경 (씬 2)</div>
+      <div class="kr-info-value">대학 캠퍼스 — 유리건물 + 야외</div>
+    </div>
+    <div class="kr-divider"></div>
+    <div class="kr-info-row">
+      <div class="kr-info-label">컬러 팔레트</div>
+      <div class="palette-row" style="margin-top: 10px;">
+        <div class="swatch" style="background:#1e3a6e" data-hex="#1e3a6e"></div>
+        <div class="swatch" style="background:#f5f5f5" data-hex="#f5f5f5"></div>
+        <div class="swatch" style="background:#2b4aff" data-hex="#2b4aff"></div>
+        <div class="swatch" style="background:#f9c97a" data-hex="#f9c97a"></div>
+        <div class="swatch" style="background:#e8e0d0" data-hex="#e8e0d0"></div>
+      </div>
+    </div>
+    <div style="padding-bottom: 24px;">
+      <div class="kr-info-label" style="margin-bottom: 8px;">키워드</div>
+      <div class="keyword-wrap">
+        <span class="kw-tag">조용한</span>
+        <span class="kw-tag">자율</span>
+        <span class="kw-tag">캐주얼</span>
+        <span class="kw-tag">따뜻한빛</span>
+        <span class="kw-tag">교실</span>
+        <span class="kw-tag">픽사3D</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER TURNAROUND -->
+  <div class="kr-center">
+    <div class="section-label">TURNAROUND — 정면 · 측면 · 후면</div>
+    <div class="turnaround-grid">
+      
+      <div class="view-box">
+        <div class="view-box-label">FRONT · 정면</div>
+        <div class="view-box-body">
+          <div class="silhouette">
+            <img src="images/kr_front.png" alt="한국 학생 정면" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+          </div>
+          <div style="font-size:8px; color:#aaa; font-family:monospace; text-align:center; line-height:1.3;">정면 전신 / 배경 없음<br>흰 배경</div>
+        </div>
+      </div>
+      
+      <div class="view-box">
+        <div class="view-box-label">SIDE · 측면</div>
+        <div class="view-box-body">
+          <div class="silhouette">
+            <img src="images/kr_side.png" alt="한국 학생 측면" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+          </div>
+          <div style="font-size:8px; color:#aaa; font-family:monospace; text-align:center; line-height:1.3;">좌측 측면 전신<br>배경 없음</div>
+        </div>
+      </div>
+      
+      <div class="view-box">
+        <div class="view-box-label">BACK · 후면</div>
+        <div class="view-box-body">
+          <div class="silhouette">
+            <img src="images/kr_back.png" alt="한국 학생 후면" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+          </div>
+          <div style="font-size:8px; color:#aaa; font-family:monospace; text-align:center; line-height:1.3;">후면 전신<br>배경 없음</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT PROMPTS -->
+  <div class="kr-right">
+    <div class="section-label" style="color:var(--kr-mid)">이미지 생성 프롬프트</div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-title">정면 레퍼런스 프롬프트</div>
+      <div class="prompt-text">Pixar-style 3D animated character, Korean middle school girl, short black bob hair (shoulder-length), navy blue school uniform jacket + white collared shirt + black pleated skirt. Standing straight, looking forward with calm expression. Full body, centered. Pure white background, no props. Soft cel-shaded 3D render, expressive eyes, clean lines. NO text, NO UI, single character only.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-title">씬 1 — 교실 컷 프롬프트</div>
+      <div class="prompt-text">Pixar-style 3D animation still frame. Same Korean student in navy school uniform sits at a wooden desk, looking down at open textbook. Morning sunlight from left window. Classroom background: rows of empty desks, chalkboard. Warm color palette. Single character, no other people. NO text.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-title">씬 2 — 캠퍼스 컷 프롬프트</div>
+      <div class="prompt-text">Pixar-style 3D animation still frame. Same Korean student, now in casual white t-shirt + light blue jeans + white sneakers. Standing on a bright university campus walkway, slight smile, holding phone loosely. Modern glass building in background. Bright daytime. NO text.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-title">측면 레퍼런스 프롬프트 (SIDE)</div>
+      <div class="prompt-text">Pixar-style 3D animated character, Korean middle school girl, short black bob hair, navy blue school uniform jacket + white collared shirt + black pleated skirt. Exact LEFT SIDE VIEW — character facing left, full body visible from head to toe. Pure white background, no props. Soft cel-shaded 3D render. STRICT SIDE PROFILE, no front-facing turn. NO text, single character only.</div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-title">후면 레퍼런스 프롬프트 (BACK)</div>
+      <div class="prompt-text">Pixar-style 3D animated character, Korean middle school girl, short black bob hair (visible from behind, clean bob cut), navy blue school uniform jacket (back view) + black pleated skirt. STRICT BACK VIEW — camera directly behind character, full body from head to toe. Pure white background, no props. Soft cel-shaded 3D render. Character looking straight ahead (away from camera). NO text, single character only.</div>
+    </div>
+  </div>
+
+  <!-- EXPRESSIONS BOTTOM -->
+  <div class="kr-bottom-l">
+    <div class="section-label">EXPRESSIONS — 표정 변화</div>
+    <div class="expr-grid">
+      <div class="expr-box">
+        <div class="expr-face">😶</div>
+        <div class="expr-label">NEUTRAL<br>평정</div>
+      </div>
+      <div class="expr-box">
+        <div class="expr-face">🙂</div>
+        <div class="expr-label">CALM<br>차분</div>
+      </div>
+      <div class="expr-box">
+        <div class="expr-face">😯</div>
+        <div class="expr-label">SURPRISED<br>놀람</div>
+      </div>
+      <div class="expr-box">
+        <div class="expr-face">🤔</div>
+        <div class="expr-label">CURIOUS<br>궁금</div>
+      </div>
+      <div class="expr-box">
+        <div class="expr-face">😄</div>
+        <div class="expr-label">HAPPY<br>기쁨</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COSTUME DETAILS -->
+  <div class="kr-bottom-r">
+    <div class="section-label">COSTUME & DETAILS — 의상 세부</div>
+    <div class="costume-grid">
+      <div class="costume-item">
+        <div class="costume-icon">🧥</div>
+        <div class="costume-name">Jacket (씬 1)</div>
+        <div class="costume-desc">네이비 블루 교복 자켓 / 단추 여밈 / 학교 엠블럼 없음</div>
+      </div>
+      <div class="costume-item">
+        <div class="costume-icon">👕</div>
+        <div class="costume-name">Shirt (씬 1)</div>
+        <div class="costume-desc">흰색 칼라 셔츠 / 깔끔한 핏</div>
+      </div>
+      <div class="costume-item">
+        <div class="costume-icon">🩱</div>
+        <div class="costume-name">Skirt (씬 1)</div>
+        <div class="costume-desc">검정 플리츠 스커트 / 무릎 위 길이</div>
+      </div>
+      <div class="costume-item">
+        <div class="costume-icon">👟</div>
+        <div class="costume-name">Shoes</div>
+        <div class="costume-desc">씬 1: 검정 로퍼<br>씬 2: 흰 스니커즈</div>
+      </div>
+      <div class="costume-item">
+        <div class="costume-icon">👖</div>
+        <div class="costume-name">Casual (씬 2)</div>
+        <div class="costume-desc">흰 티셔츠 + 연청 청바지 / 편안한 핏</div>
+      </div>
+      <div class="costume-item">
+        <div class="costume-icon">💇</div>
+        <div class="costume-name">Hair</div>
+        <div class="costume-desc">짧은 검정 단발 / 어깨 위 / 앞머리 없음 / 양쪽 대칭</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="watermark" style="color:#aaa; grid-column: 1/4;">3조 한중 문화 비교 · CHARACTER SHEET v1.0 · KOREAN STUDENT</div>
+</div>
+
+<!-- ══════════════════════════════
+     CHINESE SHEET
+══════════════════════════════ -->
+<div class="sheet cn-sheet" id="cn">
+
+  <!-- TOP BAR -->
+  <div class="cn-top-bar">
+    <div>
+      <div class="cn-char-name">Chinese Student</div>
+      <div class="cn-char-cn">中国学生 — 중국 학생</div>
+    </div>
+    <div style="text-align:right">
+      <div class="cn-char-tagline">한중 문화 비교 프로젝트 · 제3조</div>
+      <div style="font-size: 10px; color: #3a2020; font-family: var(--font-mono); margin-top: 4px; letter-spacing: 0.1em;">CHARACTER REFERENCE SHEET v1.0</div>
+    </div>
+  </div>
+
+  <!-- LEFT CONTENT -->
+  <div class="cn-left">
+    <div class="cn-section-label">TURNAROUND — 정면 · 측면 · 후면</div>
+    <div class="cn-turnaround">
+      
+      <!-- FRONT · 正面 -->
+      <div class="cn-view-box">
+        <div class="cn-view-label">FRONT · 正面</div>
+        <div class="cn-view-body">
+          <div class="cn-figure" style="border: none; background: transparent;">
+            <img src="images/cn_front.png" alt="중국 학생 정면" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+          </div>
+          <div style="font-size:8px; color:#5a3333; font-family:monospace; text-align:center; line-height:1.3;">정면 전신 / 배경 없음</div>
+        </div>
+      </div>
+      
+      <!-- SIDE · 側面 -->
+      <div class="cn-view-box">
+        <div class="cn-view-label">SIDE · 側面</div>
+        <div class="cn-view-body">
+          <div class="cn-figure" style="border: none; background: transparent;">
+            <img src="images/cn_side.png" alt="중국 학생 측면" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+          </div>
+          <div style="font-size:8px; color:#5a3333; font-family:monospace; text-align:center; line-height:1.3;">좌측 측면 / 배경 없음</div>
+        </div>
+      </div>
+      
+      <!-- BACK · 背面 -->
+      <div class="cn-view-box">
+        <div class="cn-view-label">BACK · 背面</div>
+        <div class="cn-view-body">
+          <div class="cn-figure" style="border: none; background: transparent;">
+            <img src="images/cn_back.png" alt="중국 학생 후면" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+          </div>
+          <div style="font-size:8px; color:#5a3333; font-family:monospace; text-align:center; line-height:1.3;">후면 / 배경 없음</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cn-section-label" style="margin-top: 24px;">EXPRESSIONS — 표정 변화</div>
+    <div class="cn-expr-grid">
+      <div class="cn-expr-box">
+        <div class="cn-expr-face">😐</div>
+        <div class="cn-expr-label">SERIOUS<br>진지</div>
+      </div>
+      <div class="cn-expr-box">
+        <div class="cn-expr-face">🫡</div>
+        <div class="cn-expr-label">ATTENTION<br>차렷</div>
+      </div>
+      <div class="cn-expr-box">
+        <div class="cn-expr-face">😤</div>
+        <div class="cn-expr-label">DETERMINED<br>결의</div>
+      </div>
+      <div class="cn-expr-box">
+        <div class="cn-expr-face">😓</div>
+        <div class="cn-expr-label">TIRED<br>지침</div>
+      </div>
+      <div class="cn-expr-box">
+        <div class="cn-expr-face">🙂</div>
+        <div class="cn-expr-label">PROUD<br>자부심</div>
+      </div>
+    </div>
+
+    <div class="cn-section-label" style="margin-top: 24px;">COSTUME & DETAILS — 의상 세부</div>
+    <div class="cn-costume-grid">
+      <div class="cn-costume-item">
+        <div class="cn-costume-icon">🪖</div>
+        <div class="cn-costume-name">군모 (씬 1)</div>
+        <div class="cn-costume-desc">올리브 그린 군모 / 챙 있음 / 별 없음</div>
+      </div>
+      <div class="cn-costume-item">
+        <div class="cn-costume-icon">🎽</div>
+        <div class="cn-costume-name">군복 (씬 2)</div>
+        <div class="cn-costume-desc">올리브 카키 상의 + 하의 / 제식훈련용</div>
+      </div>
+      <div class="cn-costume-item">
+        <div class="cn-costume-icon">🔴</div>
+        <div class="cn-costume-name">빨간 스카프 (씬 1)</div>
+        <div class="cn-costume-desc">红领巾 / 목에 삼각형으로 묶음 / 소년선봉대 상징</div>
+      </div>
+      <div class="cn-costume-item">
+        <div class="cn-costume-icon">🏃</div>
+        <div class="cn-costume-name">체육복 교복 (씬 1)</div>
+        <div class="cn-costume-desc">빨간 트랙수트 / 소학교 기준 / 흰 라인 장식</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT INFO + PROMPTS -->
+  <div class="cn-right">
+    <div class="cn-section-label">CHARACTER INFO</div>
+    <div class="cn-info-block">
+      <div class="cn-info-label">캐릭터 타입</div>
+      <div class="cn-info-value">소학생 (씬 1) / 대학 신입생 (씬 2)</div>
+    </div>
+    <div class="cn-info-block">
+      <div class="cn-info-label">스타일</div>
+      <div class="cn-info-value">픽사 3D 애니메이션</div>
+    </div>
+    <div class="cn-info-block">
+      <div class="cn-info-label">헤어</div>
+      <div class="cn-info-value">짧은 검정 단발<br>(한국 학생과 동일 — 일관성)</div>
+    </div>
+    <div class="cn-info-block">
+      <div class="cn-info-label">컬러 팔레트</div>
+      <div class="cn-palette-row" style="margin-top: 8px; padding-bottom: 16px;">
+        <div class="cn-swatch" style="background:#e8190a" data-hex="#e8190a"></div>
+        <div class="cn-swatch" style="background:#6b7c32" data-hex="#6b7c32"></div>
+        <div class="cn-swatch" style="background:#d4a843" data-hex="#d4a843"></div>
+        <div class="cn-swatch" style="background:#f2e8d9" data-hex="#f2e8d9"></div>
+        <div class="cn-swatch" style="background:#2a1a1a" data-hex="#2a1a1a"></div>
+      </div>
+    </div>
+
+    <div class="cn-section-label" style="margin-top: 8px;">이미지 생성 프롬프트</div>
+
+    <div class="cn-prompt-card">
+      <div class="cn-prompt-title">정면 레퍼런스</div>
+      <div class="cn-prompt-text">Pixar-style 3D animated character, Chinese elementary school girl, short black bob hair, red tracksuit school uniform + bright red neckerchief (红领巾) tied at neck. Standing straight, looking forward. Full body, centered. Pure white background, no props. Soft cel-shaded 3D render, expressive eyes. NO text, single character only.</div>
+    </div>
+
+    <div class="cn-prompt-card">
+      <div class="cn-prompt-title">씬 1 — 국기게양식</div>
+      <div class="cn-prompt-text">Pixar 3D still. Chinese student in red tracksuit + red neckerchief, standing at attention on sunny playground. Hundreds of students in rows behind, flagpole with red five-star flag rising. Morning light. Low angle push. NO text.</div>
+    </div>
+
+    <div class="cn-prompt-card">
+      <div class="cn-prompt-title">씬 2 — 군사훈련</div>
+      <div class="cn-prompt-text">Pixar 3D still. Same student, now university age, olive green military uniform + green cap. Standing rigid at attention on sun-baked sports field. Rows of uniformed students behind, instructor figure distant. Harsh midday light. NO text.</div>
+    </div>
+
+    <div class="cn-prompt-card">
+      <div class="cn-prompt-title">측면 레퍼런스 프롬프트 (SIDE)</div>
+      <div class="cn-prompt-text">Pixar-style 3D animated character, Chinese elementary school girl, short black bob hair, red tracksuit school uniform + bright red neckerchief (红领巾) tied at neck. Exact LEFT SIDE VIEW — character facing left, full body visible from head to toe. Pure white background, no props. Soft cel-shaded 3D render. STRICT SIDE PROFILE, no front-facing turn. NO text, single character only.</div>
+    </div>
+
+    <div class="cn-prompt-card">
+      <div class="cn-prompt-title">후면 레퍼런스 프롬프트 (BACK)</div>
+      <div class="cn-prompt-text">Pixar-style 3D animated character, Chinese elementary school girl, short black bob hair (clean bob cut, visible from behind), red tracksuit school uniform — BACK VIEW showing the back of the jacket + red neckerchief knot visible at back of neck. STRICT BACK VIEW — camera directly behind character, full body from head to toe. Pure white background, no props. Soft cel-shaded 3D render. Character looking straight ahead (away from camera). NO text, single character only.</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM ANCHOR -->
+  <div class="cn-bottom">
+    <div class="cn-section-label" style="margin-top: 20px;">CONSISTENCY ANCHOR — 두 캐릭터 공통 고정 프롬프트</div>
+    <div style="background:#0d0505; border:1px solid #2a1a1a; border-radius:6px; padding:14px 16px; font-family: var(--font-mono); font-size: 10px; color:#4ade80; line-height: 1.8; white-space: pre-wrap; word-break: break-word; margin-top: 12px;">Pixar-style 3D animated characters, two students:
+<span style="color:#60a5fa">Korean student — navy blue school uniform jacket + white shirt, short black bob hair, classroom desk, morning light;</span>
+<span style="color:#f87171">Chinese student — red tracksuit uniform, red neckerchief (红领巾), short black bob hair, school playground;</span>
+consistent character design, same faces throughout all scenes,
+expressive eyes, soft cel-shaded 3D render, no text, no UI elements, single still frame</div>
+  </div>
+
+  <div class="watermark" style="color:#3a2020; grid-column: 1/3;">3조 한중 문화 비교 · CHARACTER SHEET v1.0 · CHINESE STUDENT / 中国学生</div>
+</div>
+
+<script>
+function switchSheet(id) {
+  document.querySelectorAll('.sheet').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
