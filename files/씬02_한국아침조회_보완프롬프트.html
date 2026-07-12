@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>씬 02 — 한국 아침조회 보완 프롬프트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1A1A1A; --gold: #C9A84C; --muted: #6B6B6B;
+  --bg: #F7F5F0; --card: #FFFFFF; --border: #E0DBD3;
+  --kr: #1E3A8A; --cn: #DE2910;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: 'Noto Sans KR', sans-serif; font-weight: 300; line-height: 1.8; }
+
+header {
+  background: var(--ink); color: #fff;
+  padding: 40px 36px 32px; position: relative; overflow: hidden;
+}
+header::before {
+  content: '02';
+  position: absolute; right: 24px; bottom: -20px;
+  font-family: 'Noto Serif KR', serif; font-size: 160px; font-weight: 700;
+  color: rgba(255,255,255,0.04); pointer-events: none; line-height: 1;
+}
+.badge { display: inline-block; border: 1px solid var(--gold); color: var(--gold); font-size: 10px; letter-spacing: 0.15em; padding: 3px 10px; margin-bottom: 16px; font-weight: 500; }
+header h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(18px, 3.5vw, 28px); font-weight: 700; line-height: 1.4; margin-bottom: 8px; }
+header h1 span { color: var(--gold); }
+header p { color: rgba(255,255,255,0.5); font-size: 12px; }
+
+main { max-width: 860px; margin: 0 auto; padding: 40px 20px 72px; }
+
+.label {
+  font-size: 9px; letter-spacing: 0.22em; color: var(--muted);
+  font-weight: 500; text-transform: uppercase;
+  margin-bottom: 16px; padding-bottom: 7px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── CONTEXT BANNER ── */
+.context-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  background: var(--border); border: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.ctx-cell { background: var(--card); padding: 16px 18px; }
+.ctx-flag { font-size: 10px; letter-spacing: 0.12em; font-weight: 500; margin-bottom: 5px; }
+.ctx-flag.kr { color: var(--kr); }
+.ctx-flag.cn { color: var(--cn); }
+.ctx-title { font-family: 'Noto Serif KR', serif; font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.ctx-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.ctx-cell.missing { border-left: 3px solid #f59e0b; }
+.ctx-cell.done { border-left: 3px solid #4ade80; }
+.missing-badge { display: inline-block; background: #fef3c7; border: 1px solid #f59e0b; color: #92400e; font-size: 9px; font-weight: 500; padding: 1px 7px; border-radius: 2px; margin-left: 8px; letter-spacing: 0.06em; }
+.done-badge { display: inline-block; background: #f0fdf4; border: 1px solid #4ade80; color: #166534; font-size: 9px; font-weight: 500; padding: 1px 7px; border-radius: 2px; margin-left: 8px; letter-spacing: 0.06em; }
+
+/* ── SCRIPT QUOTE ── */
+.script-quote {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px; margin-bottom: 40px;
+  font-size: 13.5px; line-height: 1.9; font-style: italic; color: #3a3a3a;
+}
+.script-note { font-size: 11px; color: var(--muted); margin-top: 8px; font-style: normal; }
+
+/* ── STEP CARDS ── */
+.steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+.step { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+.step-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  background: #fafaf8;
+}
+.step-num { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+.step-who { font-size: 13px; font-weight: 500; }
+.step-tool { font-size: 10px; color: var(--muted); font-family: 'Space Mono', monospace; margin-left: auto; }
+.step-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+
+.field-name { font-size: 9px; letter-spacing: 0.14em; color: var(--muted); font-weight: 500; text-transform: uppercase; margin-bottom: 5px; }
+
+/* ── PROMPT BLOCKS ── */
+.prompt-block {
+  background: #0d0d0d; border-radius: 4px;
+  padding: 14px 16px;
+  font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.75;
+  white-space: pre-wrap; word-break: break-word;
+  position: relative;
+}
+.prompt-block.image-style { color: #a8d4f5; }
+.prompt-block.motion-style { color: #a8f5c8; }
+.prompt-block.negative-style { color: #f5a8a8; }
+
+.copy-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.5); font-size: 9px; letter-spacing: 0.1em;
+  padding: 3px 8px; cursor: pointer; border-radius: 2px;
+  font-family: 'Space Mono', monospace; transition: all 0.15s;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.9); }
+
+/* ── STRUCTURE BREAKDOWN ── */
+.structure-table {
+  width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px;
+}
+.structure-table th {
+  background: var(--ink); color: rgba(255,255,255,0.7);
+  padding: 8px 12px; text-align: left; font-weight: 400; font-size: 9px; letter-spacing: 0.1em;
+}
+.structure-table td {
+  padding: 9px 12px; border-bottom: 1px solid var(--border);
+  vertical-align: top; line-height: 1.6;
+}
+.structure-table tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
+.el-tag {
+  display: inline-block; font-size: 9px; font-family: 'Space Mono', monospace;
+  padding: 1px 6px; background: var(--border); border-radius: 2px; color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ── CAM BOX ── */
+.cam-box {
+  background: #0d0d0d; border-radius: 4px; padding: 12px 16px;
+  font-family: 'Space Mono', monospace; font-size: 11px; line-height: 1.75; color: #d4a8f5;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+/* ── CHECKLIST ── */
+.checklist { display: flex; flex-direction: column; gap: 6px; }
+.check-item {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 10px 14px; display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12.5px; line-height: 1.6;
+}
+.check-box { width: 15px; height: 15px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; margin-top: 2px; }
+.check-item.warn { border-left: 3px solid #f59e0b; }
+.check-item.warn .check-box { border-color: #f59e0b; }
+
+/* ── CONTRAST NOTE ── */
+.contrast-note {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 16px 18px; margin-bottom: 40px;
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center;
+}
+.cn-side { font-size: 12px; line-height: 1.65; }
+.cn-label { font-size: 9px; font-weight: 500; letter-spacing: 0.1em; margin-bottom: 4px; }
+.cn-label.kr { color: var(--kr); }
+.cn-label.cn { color: var(--cn); }
+.vs-divider { font-family: 'Noto Serif KR', serif; font-size: 22px; font-weight: 700; color: var(--border); text-align: center; }
+
+footer { text-align: center; padding: 24px; font-size: 10px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.1em; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">3조 · 차이나는 퀄리티 — 긴급 보완</div>
+  <h1>씬 02 — <span>한국 아침조회</span> 누락 프롬프트<br>조은선님 영상 제작용</h1>
+  <p>guideline 기준 · AI Prompt Guide 5요소 구조 적용 · kr_front.png 레퍼런스 기반</p>
+</header>
+
+<main>
+
+<!-- 현황 확인 -->
+<div class="label">현재 씬 02 상황</div>
+<div class="context-row" style="margin-bottom: 16px;">
+  <div class="ctx-cell done">
+    <div class="ctx-flag cn">🇨🇳 중국 <span class="done-badge">✓ 완료</span></div>
+    <div class="ctx-title">국기게양식 (升旗仪式)</div>
+    <div class="ctx-desc">전교생 운동장 집합 → 오성홍기 게양 → 국가 제창 → 선서<br>→ 프롬프트 기존에 있음</div>
+  </div>
+  <div class="ctx-cell missing">
+    <div class="ctx-flag kr">🇰🇷 한국 <span class="missing-badge">⚠ 누락</span></div>
+    <div class="ctx-title">아침 조례 (담임 훈화)</div>
+    <div class="ctx-desc">교실에서 담임선생님 훈화 중심의 비공식 조례<br>운동장 집합 없음 / 의식 없음<br>→ <strong>이 페이지에서 제공</strong></div>
+  </div>
+</div>
+
+<!-- 대비 포인트 -->
+<div class="contrast-note">
+  <div class="cn-side">
+    <div class="cn-label cn">🇨🇳 중국 (씬 02-A)</div>
+    운동장에 전교생이 집합해 국기를 게양하고 국가를 제창하는 <strong>공식·집단적 의식</strong>. 교장·교사의 지도 하에 엄숙하게 진행.
+  </div>
+  <div class="vs-divider">VS</div>
+  <div class="cn-side">
+    <div class="cn-label kr">🇰🇷 한국 (씬 02-B) ← 이번에 추가</div>
+    교실 안에서 담임선생님이 일상적인 공지사항을 전달하는 <strong>비공식·자율적 분위기</strong>. 대규모 집합 없음. 조용하고 평범한 아침.
+  </div>
+</div>
+
+<!-- 가이드라인 나레이션 -->
+<div class="label">가이드라인 기준 나레이션 (씬 02)</div>
+<div class="script-quote">
+  "매주 월요일 아침, 전교생이 운동장에 모여 국기게양식을 진행합니다. 국가를 제창하고 선서까지 하는 공식 의식으로, 애국주의 교육이 교육과정에 정식 포함되어 있습니다."
+  <div class="script-note">→ 나레이션이 중국을 설명하는 동안, 한국 컷은 대비 장면으로 짧게 삽입하거나 중국 컷 전/후에 배치</div>
+</div>
+
+<!-- STEP 1: 이미지 생성 -->
+<div class="label">Step 1 — 이미지 생성 (조용민 → 조은선 전달용)</div>
+<div class="steps">
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">IMG</span>
+      <span class="step-who">한국 아침조회 — 이미지 생성 프롬프트</span>
+      <span class="step-tool">Gemini / ChatGPT</span>
+    </div>
+    <div class="step-body">
+
+      <div>
+        <div class="field-name">① 메인 이미지 프롬프트 (복사하여 Gemini/ChatGPT에 입력)</div>
+        <div class="prompt-block image-style" id="img-prompt">Pixar-style 3D animated still image.
+A Korean middle school classroom, early morning homeroom.
+A kind-looking Korean female teacher stands at the front of the classroom, holding a clipboard, speaking casually to students.
+The Korean student character — short black bob hair, navy blue blazer + white collared shirt + black pleated skirt + white socks + black loafers — sits at a wooden desk in the front row, listening attentively with a calm, slightly sleepy expression.
+Other students visible in background desks, in the same navy uniform.
+Morning sunlight streams softly through windows on the left side, casting warm light across the classroom.
+The atmosphere is relaxed and informal — no ceremonies, no flags, just an ordinary quiet morning.
+Classroom background: rows of desks, green chalkboard, small potted plant on windowsill.
+Soft cel-shaded 3D render, warm color palette (navy + cream + warm amber light).
+Full scene shot, slightly wide angle to show classroom context.
+Pure white background NOT needed — show full classroom environment.
+NO text, NO text on chalkboard, NO UI elements, NO extra decorations.
+Single still frame, high quality 3D render.
+<button class="copy-btn" onclick="copyText('img-prompt', this)">COPY</button></div>
+      </div>
+
+      <div>
+        <div class="field-name">② 프롬프트 구조 해설 (AI Prompt Guide 5요소)</div>
+        <table class="structure-table">
+          <thead>
+            <tr><th>요소</th><th>이 프롬프트에서의 적용</th><th>키워드</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="el-tag">① Subject</span></td>
+              <td>한국 학생(단발, 교복)이 교실 책상에 앉아 담임선생님 얘기 듣는 장면</td>
+              <td>Korean student, navy blazer, classroom desk, homeroom teacher</td>
+            </tr>
+            <tr>
+              <td><span class="el-tag">② Style</span></td>
+              <td>픽사 3D 셀 셰이딩 스타일 — 캐릭터 레퍼런스 시트(kr_front.png)와 일치</td>
+              <td>Pixar-style 3D, soft cel-shaded</td>
+            </tr>
+            <tr>
+              <td><span class="el-tag">③ Composition</span></td>
+              <td>약간 와이드 앵글로 교실 전체 맥락이 보이도록</td>
+              <td>slightly wide angle, full scene shot</td>
+            </tr>
+            <tr>
+              <td><span class="el-tag">④ Lighting</span></td>
+              <td>왼쪽 창문에서 들어오는 따뜻한 아침 햇빛</td>
+              <td>morning sunlight, warm amber light, left window</td>
+            </tr>
+            <tr>
+              <td><span class="el-tag">⑤ Quality</span></td>
+              <td>텍스트 없음, 단일 프레임, 고품질 렌더</td>
+              <td>NO text, single still frame, high quality 3D render</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <div class="field-name">③ 파일명 규칙</div>
+        <div class="cam-box" style="color: #e8e8e8;">파일명: <span style="color:#f9c97a">02_kr.png</span>
+→ 조은선님에게 단톡으로 전달</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: Kling AI 영상화 -->
+<div class="label">Step 2 — Kling AI 영상화 (조은선 직접 사용)</div>
+<div class="steps">
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">VID</span>
+      <span class="step-who">한국 아침조회 — Kling AI 영상 프롬프트</span>
+      <span class="step-tool">Kling AI · Image-to-Video</span>
+    </div>
+    <div class="step-body">
+
+      <div>
+        <div class="field-name">① Kling AI에 입력할 영상 프롬프트 (복사하여 사용)</div>
+        <div class="prompt-block motion-style" id="kling-prompt">Pixar-style 3D animated scene.
+A Korean middle school classroom in the early morning.
+A friendly teacher stands at the front, speaking casually while students listen from their desks.
+The main Korean student character — navy school uniform, short black bob hair — sits in the front row, looking forward with a calm, slightly drowsy morning expression.
+Warm sunlight filters in from the left windows.
+The classroom is quiet and relaxed — no ceremonies, no excitement, just an ordinary morning.
+Camera movement: slow gentle push-in from the back of the classroom toward the teacher and front row, as if a viewer is walking in.
+The camera settles on a medium shot of the student at her desk, light catching her face.
+Soft, warm, peaceful atmosphere. Subtle ambient motion: curtains swaying slightly, dust particles in sunlight.
+Duration: 5 seconds. No text overlay. Smooth animation.
+<button class="copy-btn" onclick="copyText('kling-prompt', this)">COPY</button></div>
+      </div>
+
+      <div>
+        <div class="field-name">② 카메라 무브먼트 지시 (Kling AI Camera Motion 설정)</div>
+        <div class="cam-box" id="cam-motion">카메라 무브: Dolly In (전진) — 느리게
+방향: 교실 뒷문 쪽 → 칠판 방향으로 천천히 전진
+끝 포지션: 한국 학생 책상 앞 미디엄샷
+
+Kling AI 설정:
+→ Motion: Slow / Gentle
+→ Camera: Push In (앞으로 이동)
+→ Duration: 5초
+→ Aspect Ratio: 16:9</div>
+      </div>
+
+      <div>
+        <div class="field-name">③ 업로드할 레퍼런스 이미지</div>
+        <div class="cam-box" style="color: #e8e8e8;">Kling AI → Image-to-Video 탭 선택
+→ 조용민에게 받은 <span style="color:#f9c97a">02_kr.png</span> 업로드
+→ 위 프롬프트 입력 후 생성
+
+(kr_front.png 캐릭터 레퍼런스도 함께 업로드하면 일관성 향상)</div>
+      </div>
+
+      <div>
+        <div class="field-name">④ 완성 클립 파일명 규칙</div>
+        <div class="cam-box" style="color: #e8e8e8;">파일명: <span style="color:#f9c97a">02_kr_v1.mp4</span>
+→ Vrew 편집 시 씬 02에서 중국 클립(02_cn_v1.mp4) 앞 또는 뒤에 배치</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: 편집 배치 -->
+<div class="label">Step 3 — Vrew 편집 배치 방법 (조은선)</div>
+<div class="steps">
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">EDIT</span>
+      <span class="step-who">씬 02 편집 순서 — 두 클립 배치</span>
+      <span class="step-tool">Vrew</span>
+    </div>
+    <div class="step-body">
+      <div>
+        <div class="field-name">씬 02 타임라인 구성 (약 14초)</div>
+        <div class="cam-box" style="color: #e8e8e8;">Option A — 대비형 (추천)
+┌─────────────────────────────────────────┐
+│ 02_kr_v1.mp4  │  02_cn_v1.mp4           │
+│  한국 조례     │  중국 국기게양식          │
+│  ~5초         │  ~9초                   │
+└─────────────────────────────────────────┘
+나레이션: 중국 클립 시작될 때 TTS 시작
+효과: 하드컷으로 전환 (대비 극대화)
+
+Option B — 중국 집중형
+┌─────────────────────────────────────────┐
+│      02_cn_v1.mp4         │ 02_kr_v1.mp4 │
+│      중국 국기게양식        │ 한국 조례    │
+│      ~9초                 │ ~5초         │
+└─────────────────────────────────────────┘
+나레이션: 중국 클립에 TTS → 한국은 무음으로 대비 연출</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 체크리스트 -->
+<div class="label">씬 02 완성 체크리스트</div>
+<div class="checklist">
+  <div class="check-item warn">
+    <div class="check-box"></div>
+    <span>조용민 → 02_kr.png (교실 조례 이미지) 생성 완료 후 조은선에게 전달</span>
+  </div>
+  <div class="check-item">
+    <div class="check-box"></div>
+    <span>조은선 → 02_kr.png를 Kling AI Image-to-Video에 업로드</span>
+  </div>
+  <div class="check-item">
+    <div class="check-box"></div>
+    <span>위 Kling AI 프롬프트 복사하여 붙여넣기 → 5초 클립 생성</span>
+  </div>
+  <div class="check-item">
+    <div class="check-box"></div>
+    <span>이미지에 칠판에 글씨가 쓰여있으면 재생성 (NO text 조건)</span>
+  </div>
+  <div class="check-item warn">
+    <div class="check-box"></div>
+    <span>한국 아침조회 분위기 확인: <strong>의식 없음 / 조용함 / 교실 안</strong> — 중국과 명확히 대비돼야 함</span>
+  </div>
+  <div class="check-item">
+    <div class="check-box"></div>
+    <span>Vrew에서 씬 02 타임라인에 02_kr 클립 + 02_cn 클립 배치 완료</span>
+  </div>
+  <div class="check-item">
+    <div class="check-box"></div>
+    <span>씬 02 전체 길이 14초 이내 확인</span>
+  </div>
+</div>
+
+</main>
+
+<footer>차이나는 퀄리티 · 3조 · 씬 02 한국 아침조회 보완 프롬프트 · guideline + AI Prompt Guide 기준</footer>
+
+<script>
+function copyText(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.innerText.replace('COPY', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'COPIED ✓';
+    btn.style.color = '#4ade80';
+    setTimeout(() => { btn.textContent = 'COPY'; btn.style.color = ''; }, 2000);
+  });
+}
+</script>
+</body>
+</html>

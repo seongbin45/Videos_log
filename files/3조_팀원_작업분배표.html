@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차이나는 퀄리티 — 팀원 작업 분배표</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #1A1A1A;
+  --gold:   #C9A84C;
+  --red:    #C0392B;
+  --muted:  #6B6B6B;
+  --bg:     #F7F5F0;
+  --card:   #FFFFFF;
+  --border: #E0DBD3;
+  --light:  #F2EFE9;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: 'Noto Sans KR', sans-serif; font-weight: 300; line-height: 1.8; }
+
+/* HEADER */
+header {
+  background: var(--ink); color: #fff;
+  padding: 56px 40px 48px; position: relative; overflow: hidden;
+}
+header::before {
+  content: '05';
+  position: absolute; right: 32px; bottom: -20px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 200px; font-weight: 700;
+  color: rgba(255,255,255,0.04); pointer-events: none; line-height: 1;
+}
+.badge { display: inline-block; border: 1px solid var(--gold); color: var(--gold); font-size: 11px; letter-spacing: 0.15em; padding: 4px 12px; margin-bottom: 20px; font-weight: 500; }
+header h1 { font-family: 'Noto Serif KR', serif; font-size: clamp(22px, 4vw, 36px); font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+header h1 span { color: var(--gold); }
+header p { color: rgba(255,255,255,0.5); font-size: 13px; }
+
+/* LAYOUT */
+main { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* SECTION LABEL */
+.label {
+  font-size: 10px; letter-spacing: 0.2em; color: var(--muted);
+  font-weight: 500; text-transform: uppercase;
+  margin-bottom: 18px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* VIDEO OVERVIEW */
+.overview-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px; background: var(--border); border: 1px solid var(--border);
+  margin-bottom: 52px;
+}
+.ov-cell { background: var(--card); padding: 18px 20px; }
+.ov-cell .ov-label { font-size: 10px; letter-spacing: 0.12em; color: var(--muted); font-weight: 500; margin-bottom: 5px; }
+.ov-cell .ov-val { font-size: 14px; font-weight: 500; }
+
+/* SCENE STRIP */
+.scene-strip { display: flex; gap: 4px; margin-bottom: 52px; flex-wrap: wrap; }
+.scene-chip {
+  flex: 1; min-width: 100px;
+  background: var(--card); border: 1px solid var(--border);
+  padding: 12px 10px; text-align: center;
+}
+.scene-chip .sc-tag { font-size: 9px; letter-spacing: 0.12em; color: var(--muted); font-weight: 500; display: block; margin-bottom: 4px; }
+.scene-chip .sc-title { font-size: 12px; font-weight: 500; line-height: 1.4; }
+.scene-chip .sc-time { font-size: 10px; color: var(--muted); margin-top: 4px; display: block; }
+.scene-chip.highlight { border-color: var(--gold); }
+.scene-chip.highlight .sc-tag { color: var(--gold); }
+
+/* MEMBER CARDS */
+.members { display: flex; flex-direction: column; gap: 2px; margin-bottom: 52px; }
+
+.member-row {
+  background: var(--card); border: 1px solid var(--border);
+  display: grid; grid-template-columns: 220px 1fr;
+}
+.member-meta {
+  border-right: 1px solid var(--border);
+  padding: 24px 22px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.member-name { font-family: 'Noto Serif KR', serif; font-size: 18px; font-weight: 700; }
+.member-role-tag {
+  display: inline-block;
+  font-size: 10px; letter-spacing: 0.1em;
+  padding: 3px 10px; font-weight: 500;
+  border: 1px solid var(--border); color: var(--muted);
+  width: fit-content;
+}
+.member-role-tag.leader { border-color: var(--gold); color: var(--gold); }
+.member-tool {
+  font-size: 11px; color: var(--muted);
+  font-family: 'Space Mono', monospace;
+}
+.member-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+
+.task-block {}
+.task-title {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.task-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.task-items { display: flex; flex-direction: column; gap: 4px; }
+.task-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; line-height: 1.65;
+}
+.task-item::before {
+  content: '';
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--border); flex-shrink: 0; margin-top: 8px;
+}
+.task-item.key::before { background: var(--gold); }
+
+/* PROMPT BLOCK */
+.prompt-wrap {
+  background: var(--light); border: 1px solid var(--border);
+  padding: 14px 16px; font-size: 12px;
+  font-family: 'Space Mono', monospace;
+  line-height: 1.7; color: #3a3a3a;
+  white-space: pre-wrap; word-break: break-word;
+}
+.prompt-label { font-size: 10px; letter-spacing: 0.12em; color: var(--muted); font-weight: 500; margin-bottom: 6px; text-transform: uppercase; }
+
+/* SCENE ASSIGNMENT */
+.scene-assign {
+  border: 1px solid var(--border); background: var(--card);
+  margin-bottom: 2px;
+}
+.sa-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  background: var(--light);
+}
+.sa-num { font-family: 'Noto Serif KR', serif; font-size: 22px; font-weight: 700; color: var(--border); line-height: 1; }
+.sa-name { font-size: 14px; font-weight: 500; }
+.sa-time { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; margin-left: auto; }
+.sa-body { padding: 14px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+.sa-col-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 5px; }
+.sa-script { font-size: 12.5px; line-height: 1.75; color: #3a3a3a; border-left: 2px solid var(--gold); padding-left: 10px; font-style: italic; }
+.sa-note { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
+.sa-prompt-wrap { grid-column: 1 / -1; }
+.sa-prompt {
+  background: var(--light); border: 1px solid var(--border);
+  padding: 10px 14px; font-size: 11px;
+  font-family: 'Space Mono', monospace;
+  line-height: 1.7; color: #444;
+  white-space: pre-wrap; word-break: break-word;
+}
+
+/* TIMELINE */
+.timeline { margin-bottom: 52px; }
+.tl-row {
+  display: grid; grid-template-columns: 80px 1fr;
+  margin-bottom: 1px;
+}
+.tl-time { background: var(--ink); color: rgba(255,255,255,0.7); padding: 10px 12px; font-family: 'Space Mono', monospace; font-size: 11px; text-align: center; display: flex; align-items: center; justify-content: center; }
+.tl-body { background: var(--card); border: 1px solid var(--border); border-left: none; padding: 10px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.tl-event { font-size: 13px; font-weight: 500; }
+.tl-who { font-size: 11px; color: var(--muted); padding: 2px 8px; background: var(--light); border: 1px solid var(--border); }
+
+/* CHECKLIST */
+.check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; }
+.check-item { background: var(--card); border: 1px solid var(--border); padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; line-height: 1.6; }
+.check-box { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 2px; flex-shrink: 0; margin-top: 2px; }
+
+footer { text-align: center; padding: 28px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.1em; }
+
+@media (max-width: 600px) {
+  .member-row { grid-template-columns: 1fr; }
+  .member-meta { border-right: none; border-bottom: 1px solid var(--border); }
+  .sa-body { grid-template-columns: 1fr; }
+  header { padding: 40px 20px 36px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">3조 · 차이나는 퀄리티</div>
+  <h1>팀원 작업 <span>분배표</span></h1>
+  <p>기획서 V7 + 가이드라인 기준 · 총 5인 · 영상 목표 90초</p>
+</header>
+
+<main>
+
+<!-- 영상 스펙 -->
+<div class="label">영상 기본 스펙</div>
+<div class="overview-grid">
+  <div class="ov-cell"><div class="ov-label">영상 제목</div><div class="ov-val">중국 학교 생활<br>5대 차이</div></div>
+  <div class="ov-cell"><div class="ov-label">목표 길이</div><div class="ov-val">약 90초</div></div>
+  <div class="ov-cell"><div class="ov-label">비교 항목</div><div class="ov-val">5가지</div></div>
+  <div class="ov-cell"><div class="ov-label">핵심 메시지</div><div class="ov-val">국가 주도<br>집단 교육</div></div>
+  <div class="ov-cell"><div class="ov-label">이미지 툴</div><div class="ov-val">Gemini / ChatGPT</div></div>
+  <div class="ov-cell"><div class="ov-label">영상화 툴</div><div class="ov-val">Kling AI / Google Flow</div></div>
+  <div class="ov-cell"><div class="ov-label">편집 툴</div><div class="ov-val">Vrew</div></div>
+</div>
+
+<!-- 씬 흐름 -->
+<div class="label">씬 구성 흐름 (90초)</div>
+<div class="scene-strip">
+  <div class="scene-chip">
+    <span class="sc-tag">OPEN</span>
+    <span class="sc-title">오프닝</span>
+    <span class="sc-time">~10초</span>
+  </div>
+  <div class="scene-chip highlight">
+    <span class="sc-tag">01</span>
+    <span class="sc-title">등교 시간</span>
+    <span class="sc-time">~13초</span>
+  </div>
+  <div class="scene-chip highlight">
+    <span class="sc-tag">02</span>
+    <span class="sc-title">국기게양식</span>
+    <span class="sc-time">~13초</span>
+  </div>
+  <div class="scene-chip highlight">
+    <span class="sc-tag">03</span>
+    <span class="sc-title">교복 + 빨간 스카프</span>
+    <span class="sc-time">~13초</span>
+  </div>
+  <div class="scene-chip highlight">
+    <span class="sc-tag">04</span>
+    <span class="sc-title">눈 체조 + 라디오 체조</span>
+    <span class="sc-time">~13초</span>
+  </div>
+  <div class="scene-chip highlight">
+    <span class="sc-tag">05</span>
+    <span class="sc-title">대학 군사훈련</span>
+    <span class="sc-time">~13초</span>
+  </div>
+  <div class="scene-chip">
+    <span class="sc-tag">END</span>
+    <span class="sc-title">클로징</span>
+    <span class="sc-time">~10초</span>
+  </div>
+</div>
+
+<!-- 팀원별 작업 -->
+<div class="label">팀원별 작업 내용</div>
+<div class="members">
+
+  <!-- 김다현 -->
+  <div class="member-row">
+    <div class="member-meta">
+      <span class="member-name">김다현</span>
+      <span class="member-role-tag leader">팀장 · 발표 + 자막</span>
+      <span class="member-tool">TTS · Vrew · 발표 슬라이드</span>
+    </div>
+    <div class="member-body">
+
+      <div class="task-block">
+        <div class="task-title">나레이션 스크립트 관리</div>
+        <div class="task-items">
+          <div class="task-item key">가이드라인의 씬별 스크립트를 최종 확정 — 아래 내용 기준으로 수정사항 있으면 직접 편집</div>
+          <div class="task-item">TTS 생성: Clova Voice 또는 ElevenLabs(무료) 사용 → 씬 단위로 mp3 파일 분리 저장</div>
+          <div class="task-item key">TTS 파일 → 조은선에게 전달 (편집 시 씬별로 삽입해야 하므로 파일명을 씬 번호로 통일: open.mp3, 01.mp3 … end.mp3)</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">자막 제작</div>
+        <div class="task-items">
+          <div class="task-item key">Vrew에서 TTS 업로드 → 자동 자막 생성 → 오류 수정 → 조은선에게 자막 파일(.srt) 전달</div>
+          <div class="task-item">자막 언어: 한국어 기본 / 중국어 병기 여부는 팀 협의 후 결정</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">발표 준비</div>
+        <div class="task-items">
+          <div class="task-item key">6월 15일(월) 수업 발표 준비 — 영상 + 구두 설명 병행</div>
+          <div class="task-item">발표 포인트: ① 주제 선정 이유 ② 5개 항목 핵심 메시지 ③ AI 툴 활용 방식</div>
+          <div class="task-item">팀원 전원 최종 영상 사전 시청 후 Q&A 대비</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">확정 나레이션 스크립트 (가이드라인 기준)</div>
+        <div class="prompt-label">씬별 스크립트 — 이 텍스트를 TTS에 입력</div>
+        <div class="prompt-wrap">【OPEN - 약 10초】
+"한국과 중국, 같은 동아시아 국가지만 학교 문화는 꽤 다릅니다. 중국 현지 체류 경험을 바탕으로 5가지 차이점을 소개합니다."
+
+【01 - 등교시간 - 약 13초】
+"중국 초등학교는 전통적으로 7시 30분~8시 등교가 일반적으로, 한국보다 이른 편입니다. 최근 교육부 정책으로 8시 20분으로 조정됐지만 여전히 한국보다 이른 편입니다."
+
+【02 - 국기게양식 - 약 13초】
+"매주 월요일 아침, 전교생이 운동장에 모여 국기게양식을 진행합니다. 국가를 제창하고 선서까지 하는 공식 의식으로, 애국주의 교육이 교육과정에 정식 포함되어 있습니다."
+
+【03 - 교복+스카프 - 약 13초】
+"중국은 초등학교부터 체육복 형태의 교복을 입습니다. 빨간 스카프는 단순한 교복 액세서리가 아니라 중국소년선봉대 소속을 나타내는 상징으로, 이념 교육이 일상에 녹아있는 대표적인 예입니다."
+
+【04 - 체조 - 약 13초】
+"수업 사이마다 전교생이 눈 보호 체조와 라디오 체조를 함께 합니다. 수십 년째 이어진 국가 건강 정책으로, 한국에는 이에 해당하는 공식 제도가 없습니다."
+
+【05 - 군사훈련 - 약 13초】
+"중국 대학 신입생은 개강 전 1~3주간 남녀 구분 없이 군사훈련을 의무적으로 받습니다. 한국 대학에는 없는 문화로, 국가 주도 교육의 연장선으로 볼 수 있습니다."
+
+【END - 약 10초】
+"국기게양식, 빨간 스카프, 군사훈련까지 — 중국 학교 문화에는 국가 주도의 집단적 교육 방식이 일관되게 녹아있습니다. 한국과 중국, 교육에서도 두 나라의 차이가 보이지 않나요?"</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 조은선 -->
+  <div class="member-row">
+    <div class="member-meta">
+      <span class="member-name">조은선</span>
+      <span class="member-role-tag">팀원 · AI 영상 제작</span>
+      <span class="member-tool">Kling AI · Google Flow · Vrew</span>
+    </div>
+    <div class="member-body">
+
+      <div class="task-block">
+        <div class="task-title">이미지 → 영상 변환 (Kling AI)</div>
+        <div class="task-items">
+          <div class="task-item key">조용민·정성훈·최성빈에게서 씬별 이미지 수령 → Kling AI Image-to-Video로 클립 생성</div>
+          <div class="task-item">한국 컷 + 중국 컷 각각 생성 → 씬당 클립 2개 (각 5~10초)</div>
+          <div class="task-item key">클립 파일명 규칙: 씬번호_국가_버전 (예: 01_kr_v1.mp4, 01_cn_v1.mp4)</div>
+          <div class="task-item">Kling AI 무료 크레딧 부족 시 → Google Flow(Text-to-Video)로 보완</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">Kling AI 프롬프트 기준</div>
+        <div class="prompt-label">영상화 프롬프트 공통 규칙</div>
+        <div class="prompt-wrap">【공통 스타일 고정값 — 모든 씬에 앞에 붙이기】
+Pixar-style 3D animated scene, soft cel-shaded render,
+warm cinematic lighting, expressive characters,
+school setting in [Korea / China],
+smooth camera movement, 5-second clip, no text overlay.
+
+【씬별 동작 설명 (변동값)】
+01 등교: Children walking to school in morning light / students arriving at classroom desk
+02 국기게양식: All students standing at attention in schoolyard, Chinese flag rising on flagpole
+03 교복: Student in red tracksuit uniform + red neckerchief standing proudly / student in navy uniform
+04 체조: Students doing eye exercises at desks / whole school doing radio calisthenics in yard
+05 군사훈련: University freshmen in olive military uniforms marching in formation on sports field</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">최종 편집 (Vrew)</div>
+        <div class="task-items">
+          <div class="task-item key">편집 순서: OPEN → 01(등교) → 02(국기) → 03(교복) → 04(체조) → 05(군사훈련) → END</div>
+          <div class="task-item">각 항목: 한국 클립 → 중국 클립 순으로 배치 (또는 분할화면 — 팀 협의)</div>
+          <div class="task-item">김다현에게서 TTS 파일 + 자막(.srt) 수령 → 타임라인에 삽입</div>
+          <div class="task-item key">배경음악: YouTube Audio Library 저작권 프리 → 전체 볼륨 낮게 깔기</div>
+          <div class="task-item">최종 export: 1080p mp4 / 파일명: 3조_차이나는퀄리티_최종.mp4</div>
+          <div class="task-item key">초안 완성 목표: 6월 13일(금) → 팀 전체 검토 → 6월 15일 발표</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 조용민 -->
+  <div class="member-row">
+    <div class="member-meta">
+      <span class="member-name">조용민</span>
+      <span class="member-role-tag">팀원 · 이미지 제작</span>
+      <span class="member-tool">Gemini · ChatGPT · 씬 01, 02 담당</span>
+    </div>
+    <div class="member-body">
+
+      <div class="task-block">
+        <div class="task-title">담당 씬</div>
+        <div class="task-items">
+          <div class="task-item key">씬 01 — 등교 시간 (한국 + 중국 각 1장)</div>
+          <div class="task-item key">씬 02 — 국기게양식 (한국 + 중국 각 1장)</div>
+          <div class="task-item">각 씬당 2장 → 총 4장 생성 후 조은선에게 전달</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">씬 01 이미지 생성 프롬프트</div>
+        <div class="prompt-label">Gemini / ChatGPT에 입력 — 씬 01 등교 시간</div>
+        <div class="prompt-wrap">【한국 — 등교시간】
+Pixar-style 3D animated still image. A Korean elementary school student in casual clothes, short black hair, walking along a quiet street toward school at 8:30 AM. Relaxed pace, morning light, residential street background. Full body shot, centered composition. Pure white background option available. No text.
+
+【중국 — 등교시간】
+Pixar-style 3D animated still image. A Chinese elementary school student in red tracksuit school uniform, short black hair, arriving at school gate at 7:50 AM. Background: crowded school entrance, many students in identical uniforms. Early morning light, slightly rushed atmosphere. Full body shot. No text.</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">씬 02 이미지 생성 프롬프트</div>
+        <div class="prompt-label">Gemini / ChatGPT에 입력 — 씬 02 국기게양식</div>
+        <div class="prompt-wrap">【한국 — 아침 조회】
+Pixar-style 3D animated still image. A Korean middle school classroom, morning homeroom scene. A teacher stands at front, students sit at desks, relaxed informal atmosphere. Warm morning light. No large ceremonies. No text.
+
+【중국 — 국기게양식 (升旗仪式)】
+Pixar-style 3D animated still image. Wide shot of a large Chinese school playground. Hundreds of students in red tracksuit uniforms stand in perfect rows at attention. A tall flagpole at center with the five-star Chinese flag slowly rising. Students look forward seriously, morning sky. Epic sense of scale. No text.</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">전달 규칙</div>
+        <div class="task-items">
+          <div class="task-item key">파일명: 01_kr.png / 01_cn.png / 02_kr.png / 02_cn.png</div>
+          <div class="task-item">조은선에게 단톡으로 전달 — 가능한 빨리 (조은선이 영상 변환 후 편집해야 함)</div>
+          <div class="task-item">마음에 안 들면 프롬프트 수정 후 재생성 — 퀄리티 기준: 캐릭터가 보이고 상황이 명확히 읽혀야 함</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 정성훈 -->
+  <div class="member-row">
+    <div class="member-meta">
+      <span class="member-name">정성훈</span>
+      <span class="member-role-tag">팀원 · 이미지 제작</span>
+      <span class="member-tool">Gemini · ChatGPT · 씬 03, 04 담당</span>
+    </div>
+    <div class="member-body">
+
+      <div class="task-block">
+        <div class="task-title">담당 씬</div>
+        <div class="task-items">
+          <div class="task-item key">씬 03 — 교복 + 빨간 스카프 (한국 + 중국 각 1장)</div>
+          <div class="task-item key">씬 04 — 눈 체조 + 라디오 체조 (중국 2장 — 눈 체조 / 라디오 체조 각 1장)</div>
+          <div class="task-item">씬 03: 2장 / 씬 04: 2장 → 총 4장 생성 후 조은선에게 전달</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">씬 03 이미지 생성 프롬프트</div>
+        <div class="prompt-label">Gemini / ChatGPT에 입력 — 씬 03 교복</div>
+        <div class="prompt-wrap">【한국 — 중학교 교복】
+Pixar-style 3D animated still image. A Korean middle school student in navy blue school uniform jacket + white shirt + black pleated skirt. Standing relaxed, smiling slightly. Clean white background. Full body. The uniform looks formal and traditional. No accessories. No text.
+
+【중국 — 체육복 교복 + 빨간 스카프 (红领巾)】
+Pixar-style 3D animated still image. A Chinese elementary school student in bright red tracksuit school uniform. A vivid red neckerchief (红领巾, Young Pioneer scarf) tied neatly at the neck — this is the MOST IMPORTANT visual element. Standing proudly, slight smile. White background. Full body. The red scarf should be clearly visible and prominent. No text.</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">씬 04 이미지 생성 프롬프트</div>
+        <div class="prompt-label">Gemini / ChatGPT에 입력 — 씬 04 체조 (중국)</div>
+        <div class="prompt-wrap">【눈 보호 체조 (眼保健操)】
+Pixar-style 3D animated still image. Chinese classroom scene. Students sitting at desks with eyes closed, pressing acupressure points around their eyes with fingers. Peaceful focused expression. Warm classroom lighting. All students doing identical motions simultaneously. No text.
+
+【라디오 체조 (广播体操)】
+Pixar-style 3D animated still image. Chinese school playground, all students in red tracksuit uniforms doing synchronized calisthenics exercises — arms raised, bodies in motion. An instructor leads at front. Outdoor, bright daylight. Energetic, collective movement. No text.</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">전달 규칙</div>
+        <div class="task-items">
+          <div class="task-item key">파일명: 03_kr.png / 03_cn.png / 04_cn_eye.png / 04_cn_radio.png</div>
+          <div class="task-item">씬 04는 한국 컷 없음 — 중국 체조 2종으로 대신 구성</div>
+          <div class="task-item key">씬 03 빨간 스카프가 이미지에서 잘 안 보이면 반드시 재생성 (핵심 시각 요소)</div>
+          <div class="task-item">조은선에게 단톡 전달</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 최성빈 -->
+  <div class="member-row">
+    <div class="member-meta">
+      <span class="member-name">최성빈</span>
+      <span class="member-role-tag">팀원 · 이미지 제작</span>
+      <span class="member-tool">Gemini · ChatGPT · 씬 05 + 오프닝/클로징 담당</span>
+    </div>
+    <div class="member-body">
+
+      <div class="task-block">
+        <div class="task-title">담당 씬</div>
+        <div class="task-items">
+          <div class="task-item key">씬 05 — 대학 군사훈련 (한국 + 중국 각 1장)</div>
+          <div class="task-item key">오프닝 타이틀 컷 1장 + 클로징 엔딩 컷 1장</div>
+          <div class="task-item">총 4장 생성 후 조은선에게 전달</div>
+        </div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">씬 05 이미지 생성 프롬프트</div>
+        <div class="prompt-label">Gemini / ChatGPT에 입력 — 씬 05 군사훈련</div>
+        <div class="prompt-wrap">【한국 — 대학 오리엔테이션】
+Pixar-style 3D animated still image. Korean university freshmen in casual colorful clothes (t-shirts, jeans) gathered on campus for orientation. Laughing, chatting, relaxed atmosphere. Sunny campus background with modern university building. The vibe is: freedom, fun, socializing. No uniforms, no military. No text.
+
+【중국 — 대학 군사훈련 (军训, Jūnxùn)】
+Pixar-style 3D animated still image. Wide shot of Chinese university freshmen in olive green military uniforms and green caps, standing in rigid formation on a large sun-baked sports field. Serious focused expressions, standing at attention in perfect rows. A military instructor visible at the front. Harsh midday sun. Sense of scale — many students. No text.</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">오프닝 + 클로징 컷 프롬프트</div>
+        <div class="prompt-label">Gemini / ChatGPT에 입력 — 오프닝 / 클로징</div>
+        <div class="prompt-wrap">【오프닝 타이틀 컷】
+Pixar-style 3D animated still image. Split composition showing two contrasting school scenes side by side: LEFT — a quiet Korean classroom, one student at desk studying alone; RIGHT — a large Chinese school assembly with hundreds of students in rows. Clean dividing line in the center. Title-card style composition. Dramatic lighting contrast. No text overlay needed.
+
+【클로징 엔딩 컷】
+Pixar-style 3D animated still image. A Korean student and a Chinese student (in uniform with red neckerchief) standing side by side, both smiling and looking at the camera. Warm golden light. Feeling of understanding and connection despite differences. Clean background, simple and impactful. No text.</div>
+      </div>
+
+      <div class="task-block">
+        <div class="task-title">전달 규칙</div>
+        <div class="task-items">
+          <div class="task-item key">파일명: 05_kr.png / 05_cn.png / open.png / end.png</div>
+          <div class="task-item">씬 05 군사훈련 이미지가 시각적으로 임팩트 있어야 함 — 군복과 행렬이 명확히 보여야 함</div>
+          <div class="task-item key">클로징 컷은 두 학생이 함께 나오는 유일한 컷 — 완성도 신경 써주기</div>
+          <div class="task-item">조은선에게 단톡 전달</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- 씬별 내용 상세 -->
+<div class="label">씬별 비교 내용 + 팩트 체크</div>
+<div style="margin-bottom: 52px;">
+
+  <div class="scene-assign">
+    <div class="sa-head">
+      <span class="sa-num">01</span>
+      <span class="sa-name">등교 시간 — 조용민 담당</span>
+      <span class="sa-time">~13초</span>
+    </div>
+    <div class="sa-body">
+      <div>
+        <div class="sa-col-label">🇰🇷 한국</div>
+        <div class="sa-note">초등학교 평균 8시 30분~9시 등교. 별도 의식 없이 자율적으로 등교.</div>
+      </div>
+      <div>
+        <div class="sa-col-label">🇨🇳 중국</div>
+        <div class="sa-note">기존 7시 30분~8시 → 최근 정책으로 8시 20분으로 조정. 동북 지역 기준임을 자막에 명시.</div>
+      </div>
+      <div class="sa-prompt-wrap">
+        <div class="sa-col-label">나레이션 (김다현 TTS 입력)</div>
+        <div class="sa-script">"중국 초등학교는 전통적으로 7시 30분~8시 등교가 일반적으로, 한국보다 이른 편입니다. 최근 교육부 정책으로 8시 20분으로 조정됐지만 여전히 한국보다 이른 편입니다."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-assign">
+    <div class="sa-head">
+      <span class="sa-num">02</span>
+      <span class="sa-name">국기게양식 (升旗仪式) — 조용민 담당</span>
+      <span class="sa-time">~13초</span>
+    </div>
+    <div class="sa-body">
+      <div>
+        <div class="sa-col-label">🇰🇷 한국</div>
+        <div class="sa-note">담임 훈화 중심의 학급별 조회. 별도 국기 의식 없음.</div>
+      </div>
+      <div>
+        <div class="sa-col-label">🇨🇳 중국</div>
+        <div class="sa-note">매주 월요일 전교생 운동장 집합 → 국기(오성홍기) 게양 + 국가 제창 + 선서. 전국 공통 제도.</div>
+      </div>
+      <div class="sa-prompt-wrap">
+        <div class="sa-col-label">나레이션 (김다현 TTS 입력)</div>
+        <div class="sa-script">"매주 월요일 아침, 전교생이 운동장에 모여 국기게양식을 진행합니다. 국가를 제창하고 선서까지 하는 공식 의식으로, 애국주의 교육이 교육과정에 정식 포함되어 있습니다."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-assign">
+    <div class="sa-head">
+      <span class="sa-num">03</span>
+      <span class="sa-name">교복 + 빨간 스카프 (红领巾) — 정성훈 담당</span>
+      <span class="sa-time">~13초</span>
+    </div>
+    <div class="sa-body">
+      <div>
+        <div class="sa-col-label">🇰🇷 한국</div>
+        <div class="sa-note">중학교부터 교복 착용. 초등학교는 자유복.</div>
+      </div>
+      <div>
+        <div class="sa-col-label">🇨🇳 중국</div>
+        <div class="sa-note">초등학교부터 체육복 교복 + 빨간 스카프(红领巾). 스카프는 중국소년선봉대(少先队) 상징 — 이념적 의미 있음.</div>
+      </div>
+      <div class="sa-prompt-wrap">
+        <div class="sa-col-label">나레이션 (김다현 TTS 입력)</div>
+        <div class="sa-script">"중국은 초등학교부터 체육복 형태의 교복을 입습니다. 빨간 스카프는 단순한 교복 액세서리가 아니라 중국소년선봉대 소속을 나타내는 상징으로, 이념 교육이 일상에 녹아있는 대표적인 예입니다."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-assign">
+    <div class="sa-head">
+      <span class="sa-num">04</span>
+      <span class="sa-name">눈 체조 + 라디오 체조 — 정성훈 담당</span>
+      <span class="sa-time">~13초</span>
+    </div>
+    <div class="sa-body">
+      <div>
+        <div class="sa-col-label">🇰🇷 한국</div>
+        <div class="sa-note">공식적인 단체 체조 제도 없음 (이 씬은 중국만 집중 표현).</div>
+      </div>
+      <div>
+        <div class="sa-col-label">🇨🇳 중국</div>
+        <div class="sa-note">눈 보호 체조(眼保健操, 수업 사이 혈자리 지압) + 라디오 체조(广播体操, 전신 스트레칭). 수십 년 국가 건강 정책. 전국 공통.</div>
+      </div>
+      <div class="sa-prompt-wrap">
+        <div class="sa-col-label">나레이션 (김다현 TTS 입력)</div>
+        <div class="sa-script">"수업 사이마다 전교생이 눈 보호 체조와 라디오 체조를 함께 합니다. 수십 년째 이어진 국가 건강 정책으로, 한국에는 이에 해당하는 공식 제도가 없습니다."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-assign">
+    <div class="sa-head">
+      <span class="sa-num">05</span>
+      <span class="sa-name">대학 군사훈련 (军训) — 최성빈 담당</span>
+      <span class="sa-time">~13초</span>
+    </div>
+    <div class="sa-body">
+      <div>
+        <div class="sa-col-label">🇰🇷 한국</div>
+        <div class="sa-note">대학 군사훈련 없음. ROTC 등은 지원자 한정. 오티(OT)는 친목 중심.</div>
+      </div>
+      <div>
+        <div class="sa-col-label">🇨🇳 중국</div>
+        <div class="sa-note">개강 전 1~3주 의무 참여. 남녀 구분 없음. 기상·제식훈련·행군 실시. 국방 의식 고취 목적. 전국 공통.</div>
+      </div>
+      <div class="sa-prompt-wrap">
+        <div class="sa-col-label">나레이션 (김다현 TTS 입력)</div>
+        <div class="sa-script">"중국 대학 신입생은 개강 전 1~3주간 남녀 구분 없이 군사훈련을 의무적으로 받습니다. 한국 대학에는 없는 문화로, 국가 주도 교육의 연장선으로 볼 수 있습니다."</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 제작 일정 -->
+<div class="label">제작 일정</div>
+<div class="timeline" style="margin-bottom: 52px;">
+  <div class="tl-row">
+    <div class="tl-time">지금~11일</div>
+    <div class="tl-body">
+      <span class="tl-event">이미지 생성 완료 + 조은선에게 전달</span>
+      <span class="tl-who">조용민</span><span class="tl-who">정성훈</span><span class="tl-who">최성빈</span>
+    </div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">11일~12일</div>
+    <div class="tl-body">
+      <span class="tl-event">TTS 생성 + 자막(.srt) 완료 → 조은선에게 전달</span>
+      <span class="tl-who">김다현</span>
+    </div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">12일~13일</div>
+    <div class="tl-body">
+      <span class="tl-event">Kling AI 클립 생성 + Vrew 편집 합본</span>
+      <span class="tl-who">조은선</span>
+    </div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">13일~14일</div>
+    <div class="tl-body">
+      <span class="tl-event">팀 전체 초안 시청 + 수정 요청</span>
+      <span class="tl-who">전원</span>
+    </div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time" style="background:#C9A84C; color:#1A1A1A;">6월 15일</div>
+    <div class="tl-body">
+      <span class="tl-event" style="font-weight:700;">수업 발표 — 영상 초안 제출</span>
+      <span class="tl-who">김다현 발표</span>
+    </div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">15일~22일</div>
+    <div class="tl-body">
+      <span class="tl-event">피드백 반영 최종 수정</span>
+      <span class="tl-who">조은선</span>
+    </div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time" style="background:#C0392B; color:#fff;">6월 22일</div>
+    <div class="tl-body">
+      <span class="tl-event" style="font-weight:700;">이클래스 최종본 제출 마감</span>
+      <span class="tl-who">전원 확인</span>
+    </div>
+  </div>
+</div>
+
+<!-- 최종 체크리스트 -->
+<div class="label">최종 제작 체크리스트</div>
+<div class="check-grid">
+  <div class="check-item"><div class="check-box"></div>오프닝 10초 이내 마무리</div>
+  <div class="check-item"><div class="check-box"></div>항목당 13초 분배 유지</div>
+  <div class="check-item"><div class="check-box"></div>빨간 스카프 이미지에 명확히 표시</div>
+  <div class="check-item"><div class="check-box"></div>군사훈련 씬 임팩트 확인</div>
+  <div class="check-item"><div class="check-box"></div>등교시간 — 동북 지역 기준 자막 명시</div>
+  <div class="check-item"><div class="check-box"></div>클로징 핵심 메시지 강조</div>
+  <div class="check-item"><div class="check-box"></div>TTS 속도 너무 빠르지 않게</div>
+  <div class="check-item"><div class="check-box"></div>전체 90초 타임체크</div>
+  <div class="check-item"><div class="check-box"></div>BGM 볼륨 나레이션보다 낮게</div>
+  <div class="check-item"><div class="check-box"></div>export: 1080p mp4 확인</div>
+  <div class="check-item"><div class="check-box"></div>이클래스 제출 완료 (6월 22일)</div>
+  <div class="check-item"><div class="check-box"></div>AI 생성 저작권 프리 확인</div>
+</div>
+
+</main>
+
+<footer>차이나는 퀄리티 · 3조 · 한중문화콘텐츠 교양 · 기획서 V7 + 가이드라인 기준</footer>
+
+</body>
+</html>
