@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3조 팀원별 제작 업무 가이드</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:   #111111;
+      --white:   #FFFFFF;
+      --off:     #F4F3F0;
+      --border:  #DDDBD6;
+      --muted:   #888888;
+      --gold:    #B8922A;
+      --red-kr:  #C0392B;
+      --red-cn:  #DE2910;
+      --accent:  #1A3A5C;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--black);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      color: var(--black);
+      padding: 56px 48px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: '분담';
+      position: absolute;
+      right: -8px; top: -16px;
+      font-family: 'Noto Serif KR', serif;
+      font-size: 180px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.03);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      padding: 3px 10px;
+      font-weight: 500;
+    }
+    .badge.white {
+      border-color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.5);
+    }
+    header h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+    header h1 em {
+      color: var(--gold);
+      font-style: normal;
+    }
+    header p {
+      color: rgba(255,255,255,0.45);
+      font-size: 13px;
+    }
+
+    /* ── NAV BAR (member tabs) ── */
+    .nav-bar {
+      background: var(--white);
+      border-bottom: 2px solid var(--black);
+      display: flex;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .nav-bar a {
+      text-decoration: none;
+      padding: 14px 22px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      white-space: nowrap;
+      border-right: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+    .nav-bar a:hover { color: var(--black); background: var(--off); }
+    .nav-bar a.leader { color: var(--gold); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 52px 24px 100px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .label {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    /* ── OVERVIEW GRID ── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+    .ov-cell {
+      background: var(--white);
+      padding: 18px 20px;
+    }
+    .ov-cell .ov-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .ov-cell .ov-val {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ── MEMBER SECTION ── */
+    .member-section {
+      margin-bottom: 64px;
+      scroll-margin-top: 20px;
+    }
+
+    .member-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      padding: 22px 24px;
+    }
+    .member-id {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .member-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 3px;
+    }
+    .member-role {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      background: var(--black);
+      color: var(--white);
+    }
+    .member-role.gold { background: var(--gold); }
+
+    /* ───────── TASK TABLE ───────── */
+
+    .task-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .task-title {
+      background: var(--gold);
+      color: var(--white);
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .task-item {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .task-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .task-content {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--black);
+    }
+
+
+    /* step counter */
+    .steps {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 24px;
+      margin-bottom: 0;
+    }
+    .steps h4 {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .step-list { list-style: none; }
+    .step-list li {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      align-items: flex-start;
+    }
+    .step-list li:last-child { margin-bottom: 0; }
+    .step-num {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      background: var(--black);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .step-num.gold { background: var(--gold); }
+
+    .step-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .step-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* note box */
+    .note-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 14px 18px;
+      font-size: 12.5px;
+      color: #3A3A3A;
+      line-height: 1.75;
+      margin-top: 10px;
+    }
+    .note-box strong {
+      font-weight: 500;
+      color: var(--black);
+    }
+
+    /* ── SCENE REFERENCE ── */
+    .scene-ref {
+      margin-bottom: 56px;
+    }
+    .scene-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .scene-card {
+      background: var(--white);
+      padding: 18px 20px;
+    }
+    .scene-tag {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .scene-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .scene-body {
+      font-size: 12px;
+      line-height: 1.7;
+      color: #444;
+    }
+    .scene-body .cn { color: var(--red-cn); font-weight: 500; }
+    .scene-body .kr { color: var(--accent); font-weight: 500; }
+    .time-chip {
+      display: inline-block;
+      background: var(--border);
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      margin-top: 8px;
+    }
+
+    /* ── TOOL REF ── */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 56px;
+    }
+    .tool-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 16px 18px;
+    }
+    .tool-name {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .tool-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      border-top: 1px solid var(--border);
+      padding: 28px;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 40px 20px 36px; }
+      main { padding: 36px 16px 80px; }
+      .member-header { flex-direction: column; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge-row">
+    <span class="badge">3조 · 차이나는 퀄리티</span>
+    <span class="badge white">한중문화콘텐츠탐구 기말 프로젝트</span>
+    <span class="badge white">제출일 2026.06.09</span>
+  </div>
+  <h1>팀원별 <em>제작 업무</em> 가이드</h1>
+  <p>기획서 V5 · 가이드라인 기준 — 각자 해야 할 일을 한 눈에 확인하세요</p>
+</header>
+
+<!-- 이름 탭 -->
+<nav class="nav-bar">
+  <a href="#overview">전체 개요</a>
+  <a href="#daehyun" class="leader">👑 김다현 (팀장)</a>
+  <a href="#eunsun">조은선</a>
+  <a href="#yongmin">조용민</a>
+  <a href="#seonghun">정성훈</a>
+  <a href="#sungbin">최성빈</a>
+  <a href="#scenes">씬 레퍼런스</a>
+  <a href="#tools">AI 도구</a>
+</nav>
+
+<main>
+
+  <!-- 전체 개요 -->
+  <section id="overview" style="margin-bottom:56px;">
+    <div class="label">영상 기본 스펙</div>
+    <div class="overview-grid">
+      <div class="ov-cell">
+        <div class="ov-label">영상 제목 (가제)</div>
+        <div class="ov-val">중국 학교 생활 5대 차이</div>
+      </div>
+      <div class="ov-cell">
+        <div class="ov-label">목표 길이</div>
+        <div class="ov-val">약 90초</div>
+      </div>
+      <div class="ov-cell">
+        <div class="ov-label">스타일</div>
+        <div class="ov-val">픽사 3D AI 애니메이션</div>
+      </div>
+      <div class="ov-cell">
+        <div class="ov-label">핵심 메시지</div>
+        <div class="ov-val">국가 주도 집단 교육</div>
+      </div>
+      <div class="ov-cell">
+        <div class="ov-label">씬 구성</div>
+        <div class="ov-val">도입 + 5개 전개 + 마무리</div>
+      </div>
+      <div class="ov-cell">
+        <div class="ov-label">자막 언어</div>
+        <div class="ov-val">중국어 (한국어 병기 검토)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────
+      👑 김다현 — 팀장 · 발표 + 자막 제작
+  ──────────────────────────────────── -->
+  <section class="member-section" id="daehyun">
+    <div class="member-header">
+      <div>
+        <div class="member-id">MEMBER 01 · 팀장</div>
+        <div class="member-name">김다현</div>
+        <span class="member-role gold">발표 + 자막 제작</span>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">기획 총괄</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          기획서 V5 기준 전체 흐름 최종 확인 및 팀원 진행 조율
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">기획서 완성본</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">이미 완료</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">나레이션 스크립트</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          가이드라인 HTML의 씬별 스크립트를 기반으로 최종 나레이션 문장 작성 (중국 체류 경험 기반 팩트 1차 검수 포함)
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">스크립트 .docx</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">Claude / ChatGPT 활용 후 직접 검수</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">자막 제작</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          Vrew / Fliki에서 최종 클립 합본 후 중국어 자막 싱크 작업 (한국어 자막 병기 여부 결정 포함)
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">자막 파일 (.srt 또는 Vrew 내장)</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">중국어 우선, 한국어 검토</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">최종 발표</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          영상 발표 진행 및 교수 Q&A 대응 — 중국 현지 체류 경험 기반 내용 구술 설명 가능하도록 준비
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">발표 준비 메모</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">팩트 오류 이중 차단 책임</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">AI 번역 검수</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          Clova Note / TTS로 생성한 나레이션 음성 및 번역본 검토 — 오류 원천 차단
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">검수 완료 음성 파일</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">동북 지역 기준 표현 확인</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h4>작업 순서</h4>
+      <ul class="step-list">
+        <li><span class="step-num gold">1</span>가이드라인 HTML의 씬별 스크립트 문장을 Claude로 다듬기 (Role-Context-Goal-Format 4단계 공식 준수)</li>
+        <li><span class="step-num gold">2</span>완성된 스크립트로 Clova Note / TTS에서 나레이션 음성 생성</li>
+        <li><span class="step-num gold">3</span>음성 파일을 Vrew에 삽입하여 자막 자동 싱크 후 수동 교정</li>
+        <li><span class="step-num gold">4</span>최종 합본(mp4) export 전 전체 90초 타임체크 — 씬별 시간 초과 여부 확인</li>
+        <li><span class="step-num gold">5</span>발표 당일 영상 재생 + 보충 구술 준비 (교수 피드백란 비어 있으므로 Q&A 대비 필수)</li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      <strong>팀장 주의사항:</strong> 등교 시간 씬에서 반드시 "동북 지역 기준"임을 자막·나레이션에 명시해야 합니다. 클로징 나레이션은 5개 항목을 "국가 주도 집단 교육"이라는 하나의 메시지로 묶는 문장으로 마무리하세요.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────
+      조은선 — AI 영상 제작
+  ──────────────────────────────────── -->
+  <section class="member-section" id="eunsun">
+    <div class="member-header">
+      <div>
+        <div class="member-id">MEMBER 02 · 팀원</div>
+        <div class="member-name">조은선</div>
+        <span class="member-role">AI 영상 제작</span>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">Image-to-Video</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          조용민·정성훈·최성빈이 완성한 씬별 정적 이미지를 Kling AI에 업로드하여 5~10초 애니메이션 클립 생성
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">씬별 .mp4 클립 7개</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">도입·전개1~5·마무리</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">멀티클립 조합</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          Kling AI 단일 클립이 10초 제한이므로, 씬당 필요시 2~3개 클립으로 분할 생성 후 Vrew에서 이어붙이기
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">씬별 합본 클립</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">전개 씬 각 약 13초 목표</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">보조 영상 생성</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          Kling AI 생성이 어려운 씬(군사훈련 등)은 Google Flow로 텍스트-투-비디오 방식으로 보완
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">보조 클립 (.mp4)</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">무료 크레딧 확인 후 활용</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">영상 합본</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          Vrew / Fliki에서 전체 7개 씬 클립을 순서대로 연결하고 배경음악 삽입 후 최종 mp4 export
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">최종 영상.mp4</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">YouTube Audio Library 또는 Pixabay Music (저작권 프리)</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h4>작업 순서</h4>
+      <ul class="step-list">
+        <li><span class="step-num">1</span>이미지 담당 3인(조용민·정성훈·최성빈)에게 씬별 완성 이미지 파일을 공유받기 (파일명 규칙: scene_00_intro, scene_01_arrival … scene_06_end)</li>
+        <li><span class="step-num">2</span>각 이미지를 Kling AI Image-to-Video에 업로드 → 씬별 모션 프롬프트 입력 → 클립 생성 (계정 크레딧 부족 시 팀원 계정 분산 활용)</li>
+        <li><span class="step-num">3</span>생성된 클립 확인: 캐릭터 의상·얼굴이 레퍼런스 시트와 일치하는지 체크, 불일치 시 재생성</li>
+        <li><span class="step-num">4</span>Vrew에 클립 순서대로 삽입 → 김다현이 제공한 나레이션 음성 파일 연결 → 자막 싱크</li>
+        <li><span class="step-num">5</span>배경음악 볼륨 조절 (나레이션보다 낮게) → 전체 90초 타임체크 → mp4 export</li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      <strong>Kling AI 모션 프롬프트 팁:</strong> 각 씬의 분위기에 맞게 "slow pan", "subtle camera movement", "characters performing [동작]" 등 간단한 영어 모션 지시어를 추가하면 클립 품질이 올라갑니다. 군사훈련 씬은 "students marching in formation, outdoor school ground" 계열 프롬프트를 사용하세요.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────
+      조용민 — 이미지 제작 (씬 01·02)
+  ──────────────────────────────────── -->
+  <section class="member-section" id="yongmin">
+    <div class="member-header">
+      <div>
+        <div class="member-id">MEMBER 03 · 팀원</div>
+        <div class="member-name">조용민</div>
+        <span class="member-role">이미지 제작 — 씬 01·02 + 캐릭터 레퍼런스 시트</span>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">캐릭터 레퍼런스</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          픽사 3D 스타일 캐릭터 레퍼런스 시트(정면·측면·후면) 제작 — 한국 학생 캐릭터 / 중국 학생 캐릭터 각 1세트
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">레퍼런스 시트 이미지 2세트</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">Gemini / ChatGPT 이미지 생성. 전 팀원 공유 필수 (앵커 프롬프트 기반)</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">씬 01 이미지</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          <strong>등교 시간</strong> — 한국 학생이 여유있게 등교하는 컷 + 중국 학생이 이른 아침 서둘러 등교하는 컷 (각 1장 이상)
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">scene_01_arrival_KR.png, scene_01_arrival_CN.png</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">중국 동북 지역 학교 배경. 시계 또는 시각 표시 포함 권장</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">씬 02 이미지</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          <strong>국기게양식(升旗仪式)</strong> — 운동장에 전교생이 도열한 씬, 국기 게양 중인 장면
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">scene_02_flag_CN.png, scene_02_homeroom_KR.png</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">오성홍기 + 학생 집단 배열 구도. 픽사 3D 스타일 유지</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h4>작업 순서</h4>
+      <ul class="step-list">
+        <li><span class="step-num">1</span>Gemini / ChatGPT에 앵커 프롬프트 입력: <em>"Pixar 3D animation style, Korean/Chinese elementary school student character, front/side/back view reference sheet, clean white background"</em></li>
+        <li><span class="step-num">2</span>레퍼런스 시트 완성 즉시 단톡방에 공유 → 정성훈·최성빈이 동일 시트를 앵커로 사용하도록 전달</li>
+        <li><span class="step-num">3</span>씬 01: 배경 프롬프트에 "early morning school gate, Chinese northeast region school, 7:30 AM" 포함</li>
+        <li><span class="step-num">4</span>씬 02: 프롬프트에 "flag-raising ceremony, all students standing in rows on school ground, five-star red flag, Monday morning" 포함</li>
+        <li><span class="step-num">5</span>완성된 이미지를 조은선에게 전달 (규격: 16:9, 최소 1280×720px 권장)</li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      <strong>캐릭터 일관성 주의:</strong> 레퍼런스 시트의 머리 색상·얼굴형·의상 세부사항을 이후 모든 씬 이미지 프롬프트에 그대로 기술해야 합니다. 예: "same character as reference: short black hair, round face, navy tracksuit uniform with red collar"
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────
+      정성훈 — 이미지 제작 (씬 03·04)
+  ──────────────────────────────────── -->
+  <section class="member-section" id="seonghun">
+    <div class="member-header">
+      <div>
+        <div class="member-id">MEMBER 04 · 팀원</div>
+        <div class="member-name">정성훈</div>
+        <span class="member-role">이미지 제작 — 씬 03·04</span>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">씬 03 이미지</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          <strong>교복 + 빨간 스카프(红领巾)</strong> — 중국 초등학생이 체육복 교복에 빨간 스카프를 착용한 씬 + 한국 중학생 교복 비교 컷
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">scene_03_uniform_CN.png, scene_03_uniform_KR.png</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">빨간 스카프(红领巾)가 명확히 보여야 함. 가이드라인 체크리스트 3번 항목</div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">씬 04 이미지</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          <strong>눈 체조 + 라디오 체조</strong> — 학생들이 눈 주위를 손가락으로 지압하는 눈 체조 씬 + 운동장에서 라디오 체조 단체 동작 씬
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">scene_04_eyexercise_CN.png, scene_04_radiocalisthenics_CN.png</div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">집단 동작 구도 강조 (국가 건강 정책 이미지). 한국 대응 씬은 "없음" 표현 처리 가능</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h4>작업 순서</h4>
+      <ul class="step-list">
+        <li><span class="step-num">1</span>조용민이 공유한 캐릭터 레퍼런스 시트 앵커 프롬프트 수령 후 동일 캐릭터 기반으로 이미지 생성 시작</li>
+        <li><span class="step-num">2</span>씬 03 프롬프트: <em>"Pixar 3D style, Chinese elementary student wearing blue tracksuit uniform with red scarf (红领巾) around neck, school hallway background"</em></li>
+        <li><span class="step-num">3</span>씬 04 눈 체조: <em>"students sitting at desks, performing eye exercise, pressing acupressure points around eyes with fingers, classroom setting"</em></li>
+        <li><span class="step-num">4</span>씬 04 라디오 체조: <em>"large group of students doing synchronized radio calisthenics on school playground, aerial or wide-angle view"</em></li>
+        <li><span class="step-num">5</span>완성 이미지 조은선에게 전달 (16:9, 최소 1280×720px)</li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      <strong>씬 03 핵심:</strong> 빨간 스카프(红领巾)는 단순 액세서리가 아닌 少年先锋队 소속 상징임을 이미지에서 부각해야 합니다. 스카프가 잘 보이는 정면 혹은 3/4 뷰 앵글을 권장합니다. 색상이 흐릿하면 재생성하세요.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────
+      최성빈 — 이미지 제작 (씬 05 + 도입·마무리)
+  ──────────────────────────────────── -->
+  <section class="member-section" id="sungbin">
+    <div class="member-header">
+      <div>
+        <div class="member-id">MEMBER 05 · 팀원</div>
+        <div class="member-name">최성빈</div>
+        <span class="member-role">이미지 제작 — 씬 05 + 도입·마무리 타이틀</span>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">씬 05 이미지</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          <strong>대학 군사훈련(军训)</strong> — 중국 대학 신입생 남녀가 운동장에서 군사훈련을 받는 씬
+          (줄 맞춰 행진 또는 차렷 자세) + 한국 대학 오리엔테이션(친목 분위기) 비교 컷
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">
+          scene_05_military_CN.png, scene_05_orientation_KR.png
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">
+          군사훈련 씬은 Kling AI 생성이 까다로울 수 있음 → Google Flow 보조 활용 검토 (조은선과 협의)
+        </div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">도입 타이틀</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          오프닝 타이틀 이미지: "중국 학교 생활 5대 차이" 텍스트가 포함된 학교 배경 타이틀 컷
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">
+          scene_00_intro.png
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">
+          픽사 3D 학교 전경 + 텍스트 오버레이 또는 AI 생성 후 Vrew에서 자막 처리
+        </div>
+      </div>
+    </div>
+
+    <div class="task-card">
+      <div class="task-title">마무리 엔딩</div>
+      <div class="task-item">
+        <div class="task-label">업무 내용</div>
+        <div class="task-content">
+          클로징 엔딩 컷: 5개 아이콘 또는 상징 요소
+          (국기·스카프·체조·군사훈련·등교)를 한 화면에 모아 보여주는 요약 이미지
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">산출물</div>
+        <div class="task-content">
+          scene_06_end.png
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-label">비고</div>
+        <div class="task-content">
+          "한중 교육 문화 이해" 메시지 전달. 심플하고 정리된 구도 추천
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <h4>작업 순서</h4>
+      <ul class="step-list">
+        <li>
+          <span class="step-num">1</span>
+          조용민 레퍼런스 시트 수령 후 씬 05 이미지 먼저 생성
+          (가장 까다로운 씬이므로 선행)
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          씬 05 프롬프트:
+          <em>
+            "Pixar 3D style, Chinese university freshmen (male and female)
+            in military training, standing at attention in rows,
+            outdoor university grounds, summer"
+          </em>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          도입 타이틀: 학교 정문 또는 교실 전경 이미지 생성.
+          텍스트는 Vrew에서 자막으로 처리 예정이므로 배경 이미지에 집중
+        </li>
+        <li>
+          <span class="step-num">4</span>
+          마무리 씬: 5개 요소를 격자 배치하거나,
+          픽사 3D 스쿨 파노라마 뒤에 아이콘을 플로팅하는 구도로 생성 시도
+        </li>
+        <li>
+          <span class="step-num">5</span>
+          완성 이미지 조은선에게 전달
+          (16:9, 최소 1280×720px)
+        </li>
+      </ul>
+    </div>
+
+    <div class="note-box">
+      <strong>군사훈련 씬 주의:</strong>
+      가이드라인 체크리스트 4번 항목으로 "군사훈련 영상·사진 준비"가
+      별도 언급된 만큼 시각 자료의 완성도가 중요합니다.
+      AI 생성이 어려울 경우 조은선에게 즉시 알려
+      Google Flow 텍스트-투-비디오 방식으로 전환하세요.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────
+       씬 레퍼런스 (전원 참고)
+  ───────────────────────────────────── -->
+  <section class="scene-ref" id="scenes">
+    <div class="label">씬별 레퍼런스 (전원 참고)</div>
+    <div class="scene-cards">
+
+      <div class="scene-card">
+        <div class="scene-tag">OPEN · 도입</div>
+        <div class="scene-title">오프닝</div>
+        <div class="scene-body">
+          <span class="kr">한·중 학교 이미지 나란히</span> → 타이틀 등장<br>
+          나레이션: "한국과 중국, 같은 동아시아지만 학교 문화는 꽤 다릅니다."
+        </div>
+        <span class="time-chip">~10초</span>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-tag">01 · 전개</div>
+        <div class="scene-title">등교 시간</div>
+        <div class="scene-body">
+          <span class="kr">한국 8:30~9:00</span> vs <span class="cn">중국 7:30~8:20 (동북 기준)</span><br>
+          동북 지역 기준임을 자막 명시 필수
+        </div>
+        <span class="time-chip">~13초</span>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-tag">02 · 전개</div>
+        <div class="scene-title">국기게양식 升旗仪式</div>
+        <div class="scene-body">
+          <span class="kr">한국: 담임 훈화</span> vs <span class="cn">중국: 전교생 도열, 국가 제창, 선서 (매주 월요일)</span>
+        </div>
+        <span class="time-chip">~13초</span>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-tag">03 · 전개</div>
+        <div class="scene-title">교복 + 红领巾</div>
+        <div class="scene-body">
+          <span class="kr">한국: 중학교부터 교복</span> vs <span class="cn">중국: 초등부터 체육복 + 빨간 스카프 (少年先锋队)</span>
+        </div>
+        <span class="time-chip">~13초</span>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-tag">04 · 전개</div>
+        <div class="scene-title">눈 체조 + 라디오 체조</div>
+        <div class="scene-body">
+          <span class="kr">한국: 공식 제도 없음</span> vs <span class="cn">중국: 매일 눈 보호 체조 + 라디오 체조 (국가 건강 정책)</span>
+        </div>
+        <span class="time-chip">~13초</span>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-tag">05 · 전개</div>
+        <div class="scene-title">대학 군사훈련 军训</div>
+        <div class="scene-body">
+          <span class="kr">한국: 친목 오리엔테이션</span> vs <span class="cn">중국: 남녀 의무 군사훈련 1~3주</span>
+        </div>
+        <span class="time-chip">~13초</span>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-tag">END · 마무리</div>
+        <div class="scene-title">클로징</div>
+        <div class="scene-body">
+          5개 항목 요약 → 핵심 메시지 강조<br>
+          "국가 주도의 집단적 교육 방식이 일관되게 녹아있습니다."
+        </div>
+        <span class="time-chip">~10초</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AI 도구 참고 -->
+  <section id="tools" style="margin-bottom:20px;">
+    <div class="label">AI 도구 참고 (기획서 5항)</div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-name">Claude / ChatGPT</div>
+        <div class="tool-desc">스크립트·프롬프트 작성, 나레이션 생성<br>→ <strong>김다현</strong> 주도 활용</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Gemini / ChatGPT</div>
+        <div class="tool-desc">픽사 3D 캐릭터 이미지 생성<br>→ <strong>조용민·정성훈·최성빈</strong> 병렬 작업</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Kling AI</div>
+        <div class="tool-desc">이미지 → 5~10초 영상 변환<br>→ <strong>조은선</strong> 주도, 5명 계정 분산 활용</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Google Flow</div>
+        <div class="tool-desc">어려운 씬 텍스트-투-비디오 보조<br>→ <strong>조은선</strong> (군사훈련 씬 등)</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Vrew / Fliki</div>
+        <div class="tool-desc">영상 합본·자막·배경음악 삽입, mp4 export<br>→ <strong>조은선 + 김다현</strong></div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-name">Clova Note / TTS</div>
+        <div class="tool-desc">나레이션 음성 생성 및 한중 번역<br>→ <strong>김다현</strong> 검수 후 최종 확정</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>차이나는 퀄리티 · 3조 · 한중문화콘텐츠탐구 기말 프로젝트 · 2026.06.09</footer>
+
+</body>
+</html>
