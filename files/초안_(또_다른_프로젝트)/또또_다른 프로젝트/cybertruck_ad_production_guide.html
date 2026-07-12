@@ -1,0 +1,328 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); color: var(--color-text-primary); }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin: 0 0 10px;
+}
+
+.card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+}
+
+.scene-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.scene-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge-s1 { background: #E6F1FB; color: #0C447C; }
+.badge-s2 { background: #EAF3DE; color: #27500A; }
+
+.scene-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.dialogue-box {
+  background: var(--color-background-secondary);
+  border-left: 2px solid var(--color-border-secondary);
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  padding: 8px 12px;
+  margin: 8px 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--color-text-secondary);
+}
+
+.prompt-block {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 8px 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-blue { background: #378ADD; }
+.dot-green { background: #639922; }
+.dot-amber { background: #BA7517; }
+.dot-purple { background: #7F77DD; }
+
+.workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.step-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.step-text {
+  padding-top: 3px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+}
+
+.step-sub {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.divider {
+  height: 0.5px;
+  background: var(--color-border-tertiary);
+  margin: 12px 0;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  color: var(--color-text-secondary);
+}
+
+.copy-btn {
+  cursor: pointer;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: transparent;
+  color: var(--color-text-secondary);
+  float: right;
+  margin-top: -2px;
+}
+.copy-btn:hover { background: var(--color-background-secondary); }
+
+.info-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.info-chip {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.info-chip strong {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+</style>
+
+<div style="padding: 1rem 0">
+
+<!-- Header -->
+<div style="margin-bottom: 20px;">
+  <h2 style="font-size: 18px; font-weight: 500; margin-bottom: 6px;">🚗 사이버트럭 광고 제작 가이드</h2>
+  <div class="info-row">
+    <span class="info-chip">차종 <strong>Tesla Cybertruck</strong></span>
+    <span class="info-chip">캐릭터 <strong>사람 (남성, 20~30대)</strong></span>
+    <span class="info-chip">총 길이 <strong>10초</strong></span>
+    <span class="info-chip">툴 <strong>Kling AI (5초 × 2클립)</strong></span>
+  </div>
+</div>
+
+<!-- STEP 1: Character -->
+<p class="section-title">Step 1 — 캐릭터 생성 프롬프트 (레퍼런스 시트)</p>
+<div class="card">
+  <div class="label-row"><span class="dot dot-purple"></span>이미지 생성 툴용 (Midjourney / Krea / Ideogram)</div>
+  <div class="prompt-block">A cinematic stylized 3D character reference sheet of a Korean man in his late 20s. Short black hair, sharp jawline, confident expression, wearing a dark gray minimal jacket and black jeans. Full body front view, side view, and back view. No background (transparent / white). High quality 3D render, detailed textures, realistic lighting. Character design sheet format. No text, no UI elements.</div>
+  <div class="tag-row">
+    <span class="tag">정면 / 측면 / 후면 3뷰</span>
+    <span class="tag">배경 없음</span>
+    <span class="tag">Midjourney 권장</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STEP 2: Scenario -->
+<p class="section-title">Step 2 — 씬 시나리오 (총 10초, 2클립)</p>
+
+<!-- Scene 1 -->
+<div class="card">
+  <div class="scene-header">
+    <span class="scene-badge badge-s1">씬 1 · 0~5초</span>
+    <span class="scene-title">도심의 소음 속에서</span>
+  </div>
+  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px;">
+    황량한 도심 교차로. 출근길 인파 속에 한 남자가 지쳐 서 있다. 그때, 사이버트럭이 조용히 그의 앞에 멈춘다.
+  </div>
+  <div class="dialogue-box">
+    "다들 바쁘게 달리는데… 나는 왜 이렇게 제자리일까."
+  </div>
+
+  <div class="label-row"><span class="dot dot-blue"></span>씬 1 이미지 생성 프롬프트</div>
+  <div class="prompt-block">A tired young Korean man standing alone in a crowded city crosswalk at golden hour, people rushing past him in motion blur. He wears a dark gray jacket and black jeans. In the background, a matte silver Tesla Cybertruck is slowly approaching, headlights on. Cinematic wide angle, moody dramatic lighting, shallow depth of field, photorealistic. No text, no UI.</div>
+
+  <div class="label-row"><span class="dot dot-amber"></span>Kling AI 영상 프롬프트 (5초)</div>
+  <div class="prompt-block">Camera slowly pushes in on a lone young Korean man standing still in a busy city crosswalk. Crowds blur past in both directions. Golden late-afternoon light. His expression is tired, searching. A silver Tesla Cybertruck silently rolls to a stop directly in front of him. The crowd parts. Time seems to slow. Cinematic, moody, photorealistic. No dialogue. Duration: 5 seconds.</div>
+
+  <div class="label-row"><span class="dot dot-green"></span>TTS 대사 (나레이션 또는 자막 없이 캐릭터 혼잣말)</div>
+  <div class="dialogue-box">"다들 바쁘게 달리는데… 나는 왜 이렇게 제자리일까."</div>
+</div>
+
+<!-- Scene 2 -->
+<div class="card">
+  <div class="scene-header">
+    <span class="scene-badge badge-s2">씬 2 · 5~10초</span>
+    <span class="scene-title">이제 내가 앞서간다</span>
+  </div>
+  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px;">
+    남자가 사이버트럭 문을 열고 탑승. 자신감 있는 눈빛으로 정면을 바라본다. 차가 도시를 가르며 질주, 카메라가 드라마틱하게 위로 당겨진다.
+  </div>
+  <div class="dialogue-box">
+    "이제, 내가 앞서간다."
+  </div>
+
+  <div class="label-row"><span class="dot dot-blue"></span>씬 2 이미지 생성 프롬프트</div>
+  <div class="prompt-block">A confident young Korean man sitting in the driver's seat of a Tesla Cybertruck interior, gripping the steering wheel. Sharp focused eyes looking forward. Cinematic dashboard lighting, cool blue and silver tones inside the cabin. Through the windshield, an open highway at dusk. Low angle, dynamic composition. Photorealistic, cinematic. No text.</div>
+
+  <div class="label-row"><span class="dot dot-amber"></span>Kling AI 영상 프롬프트 (5초)</div>
+  <div class="prompt-block">A young Korean man opens the heavy door of a silver Tesla Cybertruck with confidence and gets in. Close-up of his determined eyes in the rearview mirror. The Cybertruck accelerates powerfully down an empty city road at dusk, city lights blurring on either side. Camera cranes up dramatically as the truck races into the distance. Epic, cinematic, photorealistic. No text. Duration: 5 seconds.</div>
+
+  <div class="label-row"><span class="dot dot-green"></span>TTS 대사</div>
+  <div class="dialogue-box">"이제, 내가 앞서간다."</div>
+</div>
+
+<div class="divider"></div>
+
+<!-- STEP 3: Workflow -->
+<p class="section-title">Step 3 — 전체 제작 워크플로우</p>
+<div class="card">
+  <div class="workflow-steps">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <strong>캐릭터 생성</strong><br>
+        <span class="step-sub">Midjourney 또는 Krea → 레퍼런스 시트 (정면/전신/배경없음) 출력</span>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <strong>씬별 이미지 생성</strong><br>
+        <span class="step-sub">캐릭터 이미지 + 씬 프롬프트 → Krea / Midjourney / Ideogram으로 각 씬 이미지 제작</span>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <strong>Kling AI 영상화</strong><br>
+        <span class="step-sub">씬별 이미지 업로드 + 영상 프롬프트 입력 → 각 5초 클립 생성 (Image-to-Video 모드)</span>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-text">
+        <strong>TTS 음성 제작</strong><br>
+        <span class="step-sub">CLOVA Dubbing / ElevenLabs → 대사 2줄 녹음 후 씬에 맞게 싱크 조절</span>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-text">
+        <strong>클립 합치기</strong><br>
+        <span class="step-sub">CapCut / DaVinci Resolve → 씬1(5초) + 씬2(5초) 연결, 음악+TTS 합성, 컬러 그레이딩</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Thumbnail -->
+<p class="section-title">Step 4 — 인스타 썸네일 프롬프트 (9:16)</p>
+<div class="card">
+  <div class="prompt-block">A viral Korean-style YouTube thumbnail in 9:16 vertical format. A silver Tesla Cybertruck driving through a neon-lit city street at night, Korean man stepping out with confidence. Bold Korean handwritten brush font typography overlay in white and yellow: "나는 앞서간다". High contrast, glowing text shadows, dramatic cinematic composition, dark background with strong lighting. Mobile-first layout with oversized text at the top third. Meme aesthetic meets cinematic emotion. Instagram Reels / TikTok optimized.</div>
+  <div class="tag-row">
+    <span class="tag">9:16 세로</span>
+    <span class="tag">한글 붓글씨체</span>
+    <span class="tag">화이트+옐로우 타이포</span>
+    <span class="tag">글로우 효과</span>
+  </div>
+</div>
+
+<!-- Tips -->
+<div class="card" style="border-color: var(--color-border-secondary);">
+  <div style="font-size: 13px; font-weight: 500; margin-bottom: 8px;">💡 Kling AI 사용 팁</div>
+  <div style="font-size: 12px; color: var(--color-text-secondary); line-height: 1.8;">
+    • <strong>Image-to-Video 모드</strong> 사용 — 캐릭터 일관성 유지에 필수<br>
+    • 카메라 무브: 씬1은 <code>slow push in</code>, 씬2는 <code>crane up + speed ramp</code><br>
+    • 클립 길이: Kling 기본 5초 설정 유지<br>
+    • Negative prompt: <code>blurry face, multiple people, cartoon, anime, text overlay</code>
+  </div>
+</div>
+
+</div>

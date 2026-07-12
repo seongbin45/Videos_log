@@ -1,0 +1,586 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); color: var(--color-text-primary); }
+
+.top-header {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 14px;
+}
+
+.char-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.char-item {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 10px;
+}
+
+.char-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 3px;
+}
+
+.char-value {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+.anchor-box {
+  background: #0a0a1a;
+  border: 0.5px solid #334;
+  border-radius: var(--border-radius-md);
+  padding: 12px 14px;
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  color: #a8c4e0;
+  line-height: 1.7;
+  margin: 10px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.anchor-box .highlight { color: #7dd3fc; }
+.anchor-box .accent { color: #fbbf24; }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin: 18px 0 8px;
+}
+
+/* Tab nav */
+.tab-nav {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  cursor: pointer;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-border-tertiary);
+  background: transparent;
+  color: var(--color-text-secondary);
+  transition: all 0.15s;
+}
+
+.tab-btn:hover { background: var(--color-background-secondary); }
+.tab-btn.active {
+  background: var(--color-background-secondary);
+  border-color: var(--color-border-primary);
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.scene-panel { display: none; }
+.scene-panel.active { display: block; }
+
+.scene-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+}
+
+.scene-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.time-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: #0a0a1a;
+  color: #7dd3fc;
+  border: 0.5px solid #334;
+  white-space: nowrap;
+}
+
+.team-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  color: var(--color-text-secondary);
+}
+
+.scene-title-text {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.field-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 10px 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.d-cyan { background: #22d3ee; }
+.d-amber { background: #f59e0b; }
+.d-purple { background: #a78bfa; }
+.d-green { background: #4ade80; }
+.d-red { background: #f87171; }
+
+.prompt-block {
+  background: #070714;
+  border: 0.5px solid #223;
+  border-radius: var(--border-radius-md);
+  padding: 10px 12px;
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  color: #94a3b8;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tts-box {
+  background: var(--color-background-secondary);
+  border-left: 2px solid #a78bfa;
+  padding: 8px 12px;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.cam-box {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: #0a0a1a;
+  border: 0.5px solid #334;
+  color: #7dd3fc;
+}
+
+.copy-btn {
+  cursor: pointer;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 0.5px solid var(--color-border-secondary);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  float: right;
+}
+.copy-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+
+.divider { height: 0.5px; background: var(--color-border-tertiary); margin: 12px 0; }
+</style>
+
+<div style="padding: 1rem 0;">
+
+<!-- Header -->
+<div class="top-header">
+  <div style="font-size: 18px; font-weight: 500; margin-bottom: 4px;">🎬 사이버트럭 1분 40초 광고 제작 가이드</div>
+  <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 12px;">캐릭터: Nana 레퍼런스 기반 · 5인 팀 · Kling AI 10초 클립 × 10씬</div>
+
+  <div style="font-size: 12px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 6px;">캐릭터 확정 스펙 (Nana 기준)</div>
+  <div class="char-grid">
+    <div class="char-item"><div class="char-label">얼굴</div><div class="char-value">한국 여성 · 20대 중반 · 갸름한 계란형 · 자연스러운 미소 · 작은 다크서클</div></div>
+    <div class="char-item"><div class="char-label">체형</div><div class="char-value">슬렌더 & 탄탄한 피트니스 체형 · 키 160cm · 긴 팔다리 비율</div></div>
+    <div class="char-item"><div class="char-label">헤어</div><div class="char-value">긴 흑갈색 웨이브 머리 · 자연스럽게 흘러내림 · 레이어드 컷</div></div>
+    <div class="char-item"><div class="char-label">의상 (광고용)</div><div class="char-value">피팅된 블랙 롱코트 + 다크 실버 바디수트 + 블랙 부츠</div></div>
+    <div class="char-item"><div class="char-label">피부</div><div class="char-value">밝고 건강한 피부 · 자연스러운 핑크빛 볼터치 · 빛나는 텍스처</div></div>
+    <div class="char-item"><div class="char-label">표정 모드</div><div class="char-value">씬 1~5: 냉철·결연 / 씬 6~7: 감성·외로움 / 씬 8~10: 희망·자신감</div></div>
+  </div>
+</div>
+
+<!-- Character Anchor Prompt -->
+<p class="section-title">🔒 캐릭터 고정 프롬프트 (모든 씬에 붙여넣기)</p>
+<div class="prompt-block"><span style="color:#7dd3fc">Korean woman, mid-20s, slim athletic build 160cm, long dark wavy layered hair naturally falling,</span>
+<span style="color:#fbbf24">oval face, natural smile lines, small undereye shadows, healthy glowing skin, soft pink cheeks,</span>
+<span style="color:#a78bfa">wearing fitted black long coat over dark silver bodysuit, black ankle boots,</span>
+consistent character design, same face and body throughout all scenes,
+photorealistic, cinematic quality, no text, no UI elements</div>
+
+<div class="divider"></div>
+
+<!-- Tab nav -->
+<p class="section-title">씬별 프롬프트 (팀원별 탭 선택)</p>
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('t1')">👤 1번 (0~20s)</button>
+  <button class="tab-btn" onclick="switchTab('t2')">👤 2번 (20~40s)</button>
+  <button class="tab-btn" onclick="switchTab('t3')">👤 3번 (40~60s)</button>
+  <button class="tab-btn" onclick="switchTab('t4')">👤 4번 (60~80s)</button>
+  <button class="tab-btn" onclick="switchTab('t5')">👤 5번 (80~100s)</button>
+</div>
+
+<!-- TEAM 1: 0~20s -->
+<div class="scene-panel active" id="t1">
+
+  <!-- Scene 1 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">0 ~ 10초</span>
+      <span class="team-badge">팀원 1번</span>
+      <span class="scene-title-text">도시의 밤</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Futuristic cyberpunk city at night, heavy rain, neon signs in Korean and Japanese glowing in blue and purple tones, massive skyscrapers with holographic advertisements, wet reflective streets. A Korean woman in her mid-20s with long dark wavy hair, slim athletic build, wearing a fitted black long coat, standing with her back partially to the camera. Only half of her face is visible, framed by falling rain. Moody, lonely atmosphere. Drone bird's eye view angle slowly descending. Photorealistic, ultra cinematic, no text in frame.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">Drone camera starts high above a neon-lit futuristic rain-soaked city and slowly descends. Below: towering skyscrapers, holographic Korean signs glowing blue and purple, rain streaking past neon lights. The camera gradually finds a lone Korean woman in a black long coat standing still on a wet street. Only the left half of her face is visible under her coat collar. She does not move. Slow, atmospheric push down. Mood: cinematic loneliness. Duration: 10 seconds. No dialogue.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">드론 하이 앵글 → 서서히 하강 / 속도: 매우 느림 / 시선: 캐릭터 위에서 내려다보기</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">2055년.<br>도시는 잠들지 않는다.</div>
+
+    <div class="tag-row">
+      <span class="tag">드론샷</span><span class="tag">비 오는 밤</span><span class="tag">네온 반사</span><span class="tag">외로운 분위기</span>
+    </div>
+  </div>
+
+  <!-- Scene 2 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">10 ~ 20초</span>
+      <span class="team-badge">팀원 1번</span>
+      <span class="scene-title-text">사이버트릭 등장</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">A massive futuristic garage door in a dark cyberpunk building slowly slides open. Inside: complete darkness. Two sharp white LED headlights pierce through the dark. A Tesla Cybertruck — matte silver angular body, geometric panels, ultra-modern design — slowly emerges from the shadow, its metallic surface reflecting blue and purple neon light. Low angle shot showing the front grill and headlights. The Korean woman in a black long coat stands 15 meters ahead, partially visible. Dramatic reveal lighting. Cinematic, photorealistic.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">A massive industrial door rumbles open slowly in darkness. Two blinding LED headlights activate inside. A Tesla Cybertruck with angular matte silver panels rolls forward from the shadows, its geometric body gleaming as neon blue light catches each facet. The truck moves slowly and deliberately toward the lone woman standing in the rain ahead. Low angle camera, slow push forward. The moment feels like an awakening. Duration: 10 seconds. No text.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">로우 앵글 지면샷 → 차량과 함께 천천히 전진 / 헤드라이트가 화면 채우는 순간 강조</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">그리고…<br>새로운 존재가 깨어난다.</div>
+
+    <div class="tag-row">
+      <span class="tag">차량 첫 등장</span><span class="tag">헤드라이트 reveal</span><span class="tag">로우앵글</span><span class="tag">어둠 속 출현</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM 2: 20~40s -->
+<div class="scene-panel" id="t2">
+
+  <!-- Scene 3 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">20 ~ 30초</span>
+      <span class="team-badge">팀원 2번</span>
+      <span class="scene-title-text">탑승</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Close-up inside a Tesla Cybertruck interior. A Korean woman mid-20s with long dark wavy hair, slim athletic build, wearing a fitted black long coat, her hand reaches for the angular door handle. Her fingers are slender, nails clean. Interior: dark matte surfaces, electric blue HUD projections activating on the windshield with holographic data, neon blue ambient lighting along the dashboard trim. Boot-up sequence visible on display. Photorealistic, cinematic. Shot from driver seat perspective looking at her hand and face reflected in the window glass.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">Close-up of a slender Korean woman's hand gripping the angular door handle of a Cybertruck. She opens it. Camera cuts inside: the dark angular interior activates — holographic HUD glows to life on the windshield, electric blue data streams appear, ambient neon lighting pulses along the dashboard edges. She slides into the driver's seat. Her reflection catches in the glass. Her expression is calm, focused. The camera slowly circles her face in a tight close-up. Duration: 10 seconds. No dialogue.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">핸드 클로즈업 → 인테리어 광각 → 얼굴 클로즈업 천천히 회전</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">단순한 자동차는 아니다.</div>
+
+    <div class="tag-row">
+      <span class="tag">손 디테일</span><span class="tag">HUD 활성화</span><span class="tag">실내 네온블루</span><span class="tag">탑승 연출</span>
+    </div>
+  </div>
+
+  <!-- Scene 4 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">30 ~ 40초</span>
+      <span class="team-badge">팀원 2번</span>
+      <span class="scene-title-text">첫 질주</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">A Tesla Cybertruck accelerating at extreme speed on a futuristic elevated highway above a neon cyberpunk city at night. The matte silver angular body reflects streaks of purple and blue neon light from city signs below. The wet road surface mirrors the city lights. Motion blur on the city background while the truck remains sharp. Drone chase shot from above and behind at 45 degrees. The woman's silhouette visible through the windshield. Photorealistic, cinematic, ultra-wide angle, speed lines effect, no text.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">The Cybertruck launches forward with a silent electric surge of acceleration on a wet futuristic elevated highway above a glowing cyberpunk city. Neon reflections from purple and blue signs streak across the wet road surface beneath the truck. Camera: drone shot tracking from above-and-behind, slightly banking left as the truck accelerates. City lights blur into long streaks. Motion blur intensifies. The truck stays sharp against the blurred world. Speed is the point. Duration: 10 seconds.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">드론 추격 45° 후방상단 → 차량 가속하며 배경 블러 강화 / 뱅킹 무브 추가</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">이건 미래와 연결된 기계다.</div>
+
+    <div class="tag-row">
+      <span class="tag">드론 추격샷</span><span class="tag">모션블러</span><span class="tag">네온 반사</span><span class="tag">속도감</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM 3: 40~60s -->
+<div class="scene-panel" id="t3">
+
+  <!-- Scene 5 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">40 ~ 50초</span>
+      <span class="team-badge">팀원 3번</span>
+      <span class="scene-title-text">추격</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Tesla Cybertruck making a sharp high-speed turn on a wet city road in a cyberpunk night city. Behind it: three sleek black surveillance drones with red LED eyes in close pursuit, beams sweeping the road. The truck's angular body tilts slightly with the turn, water spraying dramatically from all four tires. Street reflections shatter with the turn. Entrance to a dark neon-lit tunnel ahead. Low angle rear-quarter camera shot. Cinematic tension. Photorealistic, no text.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">Black surveillance drones with red lights close in from behind the Cybertruck on a wet cyberpunk city road. The woman inside makes a sharp turn — water explodes from the tires, the city reflections shatter across the wet asphalt. She drives straight into the mouth of a dark neon-lined tunnel. Camera: low angle rear-quarter, tracking the turn, then cutting to a front-facing angle as the truck disappears into the tunnel entrance. Tension, action energy. Duration: 10 seconds.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">로우앵글 후방 1/4 → 급회전 순간 드라이빙 컷 → 터널 진입 정면샷</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">도시는 그녀를 놓아주지 않았다.</div>
+
+    <div class="tag-row">
+      <span class="tag">드론 추적</span><span class="tag">급회전</span><span class="tag">터널 진입</span><span class="tag">물 튀김</span>
+    </div>
+  </div>
+
+  <!-- Scene 6 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">50 ~ 60초</span>
+      <span class="team-badge">팀원 3번</span>
+      <span class="scene-title-text">탈출</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Tesla Cybertruck at high speed inside a long neon-lit tunnel. Tunnel walls: alternating blue and white LED strips stretching infinitely into a vanishing point. The Cybertruck's LED light bar blazing bright. Interior shot: Korean woman mid-20s, long dark wavy hair, tight jaw, sharp focused eyes looking straight ahead. Determined expression. Reflected tunnel lights streaking across her face and the windshield. Low angle interior wide shot showing both her face and the tunnel ahead. Photorealistic, cinematic.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">The Cybertruck blazes through a long neon tunnel at full speed. Blue and white LED strips on tunnel walls create infinite streaking light on either side. Camera alternates: low angle exterior showing the truck's LED light bar blazing forward, then cuts to interior close-up on the woman's determined face. Her jaw is set. Her eyes are fixed forward. No hesitation. The lights of the tunnel streak across her face like war paint. She is not stopping. Duration: 10 seconds.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">외부 로우앵글 → 인테리어 여성 얼굴 클로즈업 / 터널 빛이 얼굴에 스치는 연출</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">하지만 그녀는 멈추지 않았다.</div>
+
+    <div class="tag-row">
+      <span class="tag">결심한 표정</span><span class="tag">네온 터널</span><span class="tag">낮은 앵글</span><span class="tag">LED 강조</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM 4: 60~80s -->
+<div class="scene-panel" id="t4">
+
+  <!-- Scene 7 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">60 ~ 70초</span>
+      <span class="team-badge">팀원 4번</span>
+      <span class="scene-title-text">감성 전환</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Tesla Cybertruck parked silently on a rain-slicked futuristic bridge at night. City skyline in the background: thousands of tiny glowing windows and neon signs reflected in the rain-covered bridge surface. Inside the car: Korean woman mid-20s with long dark wavy hair, black long coat, sitting quietly. She leans her head slightly against the window. Her eyes look out at the city lights. Soft rain droplets trace down the window glass, distorting the city lights into watercolor. Emotional, introspective. Side-window exterior shot. Warm interior ambient light contrasts with the cold blue city outside.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">The Cybertruck sits still on a rain-soaked futuristic bridge. Everything is quiet. Camera holds on the exterior side window: the woman's face visible through rain droplets running down the glass. She looks out at the city skyline — thousands of lights refracted through the rain into soft bokeh. Her breathing slows. Her eyes are gentle now. The city is beautiful and distant. The camera slowly pulls away, revealing the scale of the city behind the solitary parked truck. Duration: 10 seconds. Quiet, emotional.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">사이드 윈도우 클로즈업 → 서서히 풀백 / 빗방울이 얼굴과 도시를 왜곡하는 연출</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">누군가에게 미래는 두려움이다.</div>
+
+    <div class="tag-row">
+      <span class="tag">감성 컷</span><span class="tag">빗방울 창문</span><span class="tag">야경 반사</span><span class="tag">정적인 장면</span>
+    </div>
+  </div>
+
+  <!-- Scene 8 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">70 ~ 80초</span>
+      <span class="team-badge">팀원 4번</span>
+      <span class="scene-title-text">새로운 시작</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Inside Tesla Cybertruck: Korean woman mid-20s, long dark wavy hair, black long coat, sitting in driver's seat. She slowly smiles — warm, genuine, hopeful. Interior ambient lighting shifts from cold blue to warm golden tone. The HUD display glows back to life showing a new route. Her hand moves to the steering wheel. Dashboard displays activate. The windshield shows the rain beginning to slow, city lights ahead. Emotional close-up on her smile. Cinematic warmth. Photorealistic.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">Inside the Cybertruck on the bridge. The woman stares ahead quietly. Then — a small, genuine smile forms. The interior ambient lighting shifts from cold blue to warm gold. The HUD flickers and reactivates, displaying a new route forward. She grips the steering wheel. The engine hums back to life — a low electric pulse. Camera holds on her face: hope replacing fear. Then cuts wide to the truck's exterior lights powering back on, illuminating the wet bridge ahead. Duration: 10 seconds.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">얼굴 미디엄샷 → 클로즈업 미소 → 외부 컷 (차량 조명 재점등)</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">누군가에겐… 자유.</div>
+
+    <div class="tag-row">
+      <span class="tag">미소 클로즈업</span><span class="tag">웜톤 전환</span><span class="tag">HUD 재가동</span><span class="tag">희망 분위기</span>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM 5: 80~100s -->
+<div class="scene-panel" id="t5">
+
+  <!-- Scene 9 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">80 ~ 90초</span>
+      <span class="team-badge">팀원 5번</span>
+      <span class="scene-title-text">새벽 질주</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Tesla Cybertruck at high speed on an empty futuristic highway at pre-dawn. Sky: dark blue transitioning to deep orange and pink at the horizon. The city skyline silhouetted against the brightening sky. The Cybertruck's angular matte silver body glows with the first light of dawn, creating a warm golden rim light along its geometric edges. Aerial drone side-tracking shot showing the truck cutting across the empty highway with the vast awakening sky behind it. Cinematic hope, vast scale. Photorealistic, epic wide angle.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">Pre-dawn. The Cybertruck races down an empty elevated highway. The sky is shifting from deep blue to warm orange on the horizon. Camera: aerial drone tracking from the side, wide angle. The truck's angular panels catch the first golden light of dawn along their geometric edges. The city skyline is a dark silhouette. Nothing else on the road. She is alone and free. The camera pulls up dramatically, revealing the vast scale of the awakening world below and ahead of her. Duration: 10 seconds. Epic, vast, hopeful.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">항공 사이드 추적 → 크레인업으로 광각 풀백 / 새벽빛이 차량 엣지에 림라이트 연출</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box">미래는 이미 시작되었다.</div>
+
+    <div class="tag-row">
+      <span class="tag">항공샷</span><span class="tag">새벽빛</span><span class="tag">림라이트</span><span class="tag">고속질주</span>
+    </div>
+  </div>
+
+  <!-- Scene 10 -->
+  <div class="scene-card">
+    <div class="scene-head">
+      <span class="time-badge">90 ~ 100초</span>
+      <span class="team-badge">팀원 5번 (합치기)</span>
+      <span class="scene-title-text">엔딩 + 로고</span>
+    </div>
+
+    <div class="field-label"><span class="dot d-cyan"></span>이미지 생성 프롬프트</div>
+    <div class="prompt-block">Tesla Cybertruck driving away into the distance on a long straight road at dawn. Shot from directly behind: the truck getting smaller as it moves toward the horizon, the brightening sky ahead. The road stretches perfectly straight to the vanishing point. Dramatic symmetrical composition. The truck's tail lights glow red-orange as it moves away. Black overlay begins at the edges of frame. Ultra-wide cinematic format. No text. Then: logo frame — pure black background, centered silver metallic text "CYBERTRUCK" and below "DRIVE THE FUTURE" in clean sans-serif. Minimalist, premium.</div>
+
+    <div class="field-label"><span class="dot d-amber"></span>Kling AI 영상 프롬프트</div>
+    <div class="prompt-block">The Cybertruck drives directly away from camera down a long straight road toward a glowing dawn horizon. Perfectly centered, symmetrical composition. The truck grows smaller and smaller. The world becomes quiet. The frame slowly fades to black from the edges inward until the truck is just a glowing point of light — then darkness. Hold 2 seconds of black. Then a slow fade-in: silver metallic text "CYBERTRUCK" appears centered on black, followed by "DRIVE THE FUTURE" underneath in smaller clean type. Duration: 10 seconds total.</div>
+
+    <div class="field-label"><span class="dot d-purple"></span>카메라 무브</div>
+    <div class="cam-box">후방 정면 고정 → 차량 멀어지며 페이드아웃 → 블랙 → 로고 페이드인</div>
+
+    <div class="field-label"><span class="dot d-green"></span>TTS 대사</div>
+    <div class="tts-box" style="font-size: 15px; font-weight: 500; font-style: normal; color: var(--color-text-primary);">
+      CYBERTRUCK<br>
+      <span style="font-size: 12px; font-weight: 400; color: var(--color-text-secondary);">DRIVE THE FUTURE</span>
+    </div>
+
+    <div class="tag-row">
+      <span class="tag">멀어지는 컷</span><span class="tag">페이드아웃</span><span class="tag">로고 등장</span><span class="tag">엔딩</span>
+    </div>
+
+    <div style="margin-top: 12px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.7;">
+      <strong style="color: var(--color-text-primary);">🎞 5번 팀원 합치기 체크리스트</strong><br>
+      □ 씬 1~10 클립 순서 확인 (총 100초)<br>
+      □ 캐릭터 일관성 확인 (얼굴/의상/헤어)<br>
+      □ TTS 대사 타이밍 싱크<br>
+      □ BGM: 저음 드론 → 액션 → 감성 → 웅장 4구간 편집<br>
+      □ 색보정: 전체 Teal & Orange 시네마틱 LUT 적용<br>
+      □ 효과음: 전기 충전음 / 빗소리 / 터널 리버브 레이어
+    </div>
+  </div>
+</div>
+
+<!-- Color & BGM guide -->
+<div class="divider"></div>
+<p class="section-title">🎨 색감 & BGM 가이드</p>
+<div class="scene-card">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div>
+      <div class="field-label"><span class="dot d-cyan"></span>씬별 색톤</div>
+      <div class="cam-box" style="font-size: 12px; line-height: 1.9;">
+        0~40초: 차가운 블루/퍼플 네온<br>
+        40~60초: 레드 액센트 + 다크<br>
+        60~70초: 소프트 블루 + 보케<br>
+        70~80초: 웜 골든 + 앰버<br>
+        80~100초: 오렌지/핑크 새벽빛
+      </div>
+    </div>
+    <div>
+      <div class="field-label"><span class="dot d-amber"></span>BGM 구성</div>
+      <div class="cam-box" style="font-size: 12px; line-height: 1.9;">
+        0~20초: 저음 신스 드론<br>
+        20~60초: 미래형 액션 비트<br>
+        60~70초: 피아노 + 빗소리<br>
+        70~80초: 감성 상승 멜로디<br>
+        80~100초: 오케스트라 + 신스
+      </div>
+    </div>
+  </div>
+  <div class="field-label" style="margin-top: 12px;"><span class="dot d-green"></span>추천 효과음 레이어</div>
+  <div class="tag-row">
+    <span class="tag">전기 충전음 (씬2)</span>
+    <span class="tag">HUD 부팅음 (씬3)</span>
+    <span class="tag">빗소리 (씬1,7)</span>
+    <span class="tag">타이어 마찰음 (씬5)</span>
+    <span class="tag">터널 리버브 (씬5,6)</span>
+    <span class="tag">엔진 재가동 (씬8)</span>
+  </div>
+</div>
+
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.scene-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
