@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영상제작 과정 보고서 - 3조 차이나는 퀄리티</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&amp;family=Noto+Serif+KR:wght@700&amp;display=swap');
+    
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        line-height: 1.7;
+        color: #222;
+        max-width: 860px;
+        margin: 40px auto;
+        padding: 40px 50px;
+        background: white;
+        box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+        font-family: 'Noto Serif KR', serif;
+        font-size: 26px;
+        text-align: center;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+    .subtitle {
+        text-align: center;
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 40px;
+    }
+    h2 {
+        font-size: 18px;
+        border-bottom: 2px solid #222;
+        padding-bottom: 8px;
+        margin-top: 40px;
+        margin-bottom: 16px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 14px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+    }
+    th {
+        background: #f5f5f5;
+        font-weight: 600;
+    }
+    .placeholder {
+        background: #fff9e6;
+        border: 2px dashed #f0c36b;
+        padding: 16px;
+        color: #8a6d3b;
+        font-style: italic;
+    }
+    .info-box {
+        background: #f8f9fa;
+        padding: 16px 20px;
+        border-left: 4px solid #222;
+        margin: 20px 0;
+    }
+    ul {
+        padding-left: 20px;
+    }
+    li {
+        margin-bottom: 6px;
+    }
+    .footer {
+        margin-top: 60px;
+        text-align: center;
+        font-size: 13px;
+        color: #666;
+    }
+</style>
+</head>
+<body>
+
+<h1>한중문화콘텐츠탐구 기말 프로젝트</h1>
+<h1 style="margin-top:0; font-size:22px;">영상제작 과정 보고서</h1>
+
+<div class="subtitle">
+    <strong>3조 차이나는 퀄리티</strong><br>
+    영상 제목: 중국 학교 생활 5대 차이<br>
+    제출일: 2026년 6월 22일
+</div>
+
+<h2>1. 프로젝트 개요</h2>
+<p>중국 동북 지역 어학연수 경험을 바탕으로 중국 학교 문화의 특징을 한국과 비교하는 90초 분량의 영상을 제작했다. 주요 비교 항목은 등교 시간, 국기게양식(升旗仪式), 교복 + 빨간 스카프(红领巾), 눈 보호 체조·라디오 체조, 대학 신입생 군사훈련(军训)이다.</p>
+<p>핵심 메시지는 <strong>“국가 주도 집단 교육의 차이”</strong>이며, 픽사 스타일 3D 애니메이션으로 시각화했다.</p>
+
+<h2>2. 사용 툴 및 제작 파이프라인</h2>
+<ul>
+    <li><strong>이미지 생성</strong>: Gemini, ChatGPT</li>
+    <li><strong>영상화</strong>: Kling AI (Image-to-Video)</li>
+    <li><strong>보조 툴</strong>: Google Flow</li>
+    <li><strong>음성·자막</strong>: Clova Note / TTS + Vrew</li>
+    <li><strong>편집</strong>: Vrew</li>
+</ul>
+<p><strong>제작 흐름</strong>: 캐릭터 레퍼런스 시트 제작 → 앵커 프롬프트 확정 → 씬별 이미지 생성 → Kling AI 클립 변환 → TTS·자막 작업 → Vrew 합본</p>
+
+<h2>3. 캐릭터 일관성 확보 전략</h2>
+<p>AI 이미지 생성의 최대 약점인 캐릭터 불일치를 해결하기 위해 다음 방법을 적용했다.</p>
+
+<p><strong>① 캐릭터 레퍼런스 시트 사전 제작</strong><br>
+한국 학생과 중국 학생 각각 정면·측면·후면 이미지를 먼저 생성했다. 두 캐릭터 모두 <strong>짧은 검정 단발</strong>로 통일했다.</p>
+
+<p><strong>② 앵커 프롬프트 고정 적용</strong><br>
+모든 이미지 생성 프롬프트 앞부분에 아래 문장을 고정으로 사용했다:</p>
+<div class="info-box">
+Pixar-style 3D animated characters, two students: Korean student — navy blue school uniform jacket + white shirt, short black bob hair… Chinese student — red tracksuit uniform + red neckerchief (红领巾), short black bob hair… consistent character design, same faces throughout all scenes, expressive eyes, soft cel-shaded 3D render, no text, no UI elements.
+</div>
+
+<h2>4. 사실 검증 과정</h2>
+<p>영상 내용은 다음과 같이 교차 검증했다:</p>
+<ul>
+    <li>팀원 중 1명의 <strong>중국 동북 지역 직접 체류 경험</strong> (1차 자료)</li>
+    <li>Claude를 통한 내용 정리 및 보완</li>
+    <li>중국 교육 관련 자료 교차 확인</li>
+</ul>
+
+<h2>5. 발생한 문제와 해결 과정</h2>
+<table>
+    <thead>
+        <tr>
+            <th>문제</th>
+            <th>원인</th>
+            <th>시도한 해결</th>
+            <th>결과</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>캐릭터 얼굴·의상 불일치</td>
+            <td>AI 생성 시마다 변형</td>
+            <td>레퍼런스 시트 + 앵커 프롬프트 고정 적용</td>
+            <td>대부분의 씬에서 일관성 확보</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="placeholder">
+                <strong>[Kling AI 실제 실패 사례를 여기에 작성하세요]</strong><br><br>
+                예시:<br>
+                • 문제: 씬 05 군사훈련에서 행진 모션이 부자연스럽고 다리가 겹쳐 보임<br>
+                • 발생 씬: 씬 05 (중국 대학 군사훈련)<br>
+                • 원인 추정: Kling AI가 복잡한 집단 동작을 제대로 처리하지 못함<br>
+                • 시도한 해결: 모션 프롬프트 수정 + 3회 재생성<br>
+                • 결과: 여전히 어색하여 Google Flow로 대체 생성
+            </td>
+        </tr>
+        <tr>
+            <td>Kling AI 크레딧 부족</td>
+            <td>무료 플랜 제한</td>
+            <td>팀원 5명 계정 분산 사용 + Google Flow 병행</td>
+            <td>클립 생성 지연 최소화</td>
+        </tr>
+        <tr>
+            <td>나레이션 타이밍 불일치</td>
+            <td>TTS 기본 속도 문제</td>
+            <td>Vrew에서 수동 속도 조절 및 자막 싱크</td>
+            <td>청취 편의성 확보</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>6. 팀원 역할 분담</h2>
+<ul>
+    <li><strong>김다현 (팀장)</strong>: 기획 총괄, 나레이션 스크립트 확정, TTS 생성, 자막 제작, 발표 준비</li>
+    <li><strong>조은선</strong>: Kling AI 영상화 총괄 및 Vrew 최종 편집·합본</li>
+    <li><strong>조용민</strong>: 씬 01·02 이미지 생성 + 캐릭터 레퍼런스 시트 제작</li>
+    <li><strong>정성훈</strong>: 씬 03·04 이미지 생성</li>
+    <li><strong>최성빈</strong>: 씬 05 + 오프닝·클로징 이미지 생성</li>
+</ul>
+
+<h2>7. 결론</h2>
+<p>이번 프로젝트는 AI 도구의 한계를 보완하기 위한 <strong>프롬프트 전략과 팀 협업</strong>이 핵심이었다. 캐릭터 레퍼런스 시트와 앵커 프롬프트를 통해 일관성을 확보하려 노력했으며, 실제 Kling AI 사용 과정에서 발생한 기술적 한계는 팀원 간 신속한 대체 툴 활용으로 대응했다.</p>
+
+<div class="footer">
+    3조 차이나는 퀄리티 · 한중문화콘텐츠탐구 기말 프로젝트<br>
+    2026년 6월
+</div>
+
+</body>
+</html>

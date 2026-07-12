@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 프롬프트 사용 내역 보고서 - 3조 차이나는 퀄리티</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&amp;family=Noto+Serif+KR:wght@700&amp;display=swap');
+    
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        line-height: 1.75;
+        color: #222;
+        max-width: 920px;
+        margin: 40px auto;
+        padding: 40px 50px;
+        background: white;
+        box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    }
+    h1 { font-family: 'Noto Serif KR', serif; font-size: 24px; text-align: center; margin-bottom: 8px; }
+    .subtitle { text-align: center; color: #555; font-size: 14px; margin-bottom: 40px; }
+    h2 { font-size: 17px; border-bottom: 2px solid #222; padding-bottom: 8px; margin-top: 42px; margin-bottom: 16px; }
+    h3 { font-size: 15px; margin-top: 28px; margin-bottom: 10px; color: #333; }
+    .prompt-box {
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 16px 18px;
+        font-family: 'Space Mono', monospace;
+        font-size: 13px;
+        line-height: 1.65;
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin: 12px 0;
+    }
+    .note {
+        font-size: 13px;
+        color: #555;
+        background: #fffbeb;
+        padding: 10px 14px;
+        border-left: 4px solid #f0c36b;
+        margin: 12px 0;
+    }
+    .footer { margin-top: 60px; text-align: center; font-size: 13px; color: #666; }
+</style>
+</head>
+<body>
+
+<h1>AI 프롬프트 사용 내역 보고서</h1>
+<div class="subtitle">
+    한중문화콘텐츠탐구 기말 프로젝트<br>
+    3조 차이나는 퀄리티
+</div>
+
+<h2>1. 공통 앵커 프롬프트 (전체 이미지 생성 시 고정 사용)</h2>
+<div class="prompt-box">Pixar-style 3D animated characters, two students:
+Korean student — navy blue school uniform jacket + white shirt, short black bob hair;
+Chinese student — red tracksuit uniform + red neckerchief (红领巾), short black bob hair;
+consistent character design, same faces throughout all scenes,
+expressive eyes, soft cel-shaded 3D render, no text, no UI elements, single still frame</div>
+
+<h2>2. 캐릭터 레퍼런스 시트 프롬프트</h2>
+<h3>한국 학생 (정면 / 측면 / 후면)</h3>
+<div class="prompt-box">Pixar-style 3D animated character, Korean middle school girl, short black bob hair (shoulder-length), navy blue school uniform jacket + white collared shirt + black pleated skirt. Standing straight. Full body, centered. Pure white background, no props. Soft cel-shaded 3D render, expressive eyes. NO text, single character only.</div>
+
+<h3>중국 학생 (정면 / 측면 / 후면)</h3>
+<div class="prompt-box">Pixar-style 3D animated character, Chinese elementary school girl, short black bob hair, red tracksuit school uniform + bright red neckerchief (红领巾) tied at neck. Standing straight. Full body, centered. Pure white background, no props. Soft cel-shaded 3D render, expressive eyes. NO text, single character only.</div>
+
+<h2>3. 씬별 이미지 생성 + Kling AI 모션 프롬프트 (전체 7개 씬)</h2>
+
+<h3>OPEN - 오프닝</h3>
+<div class="prompt-box">【이미지 생성 프롬프트】
+Pixar-style 3D animated still image. Split composition showing two contrasting school scenes side by side. LEFT: quiet Korean classroom with one student studying. RIGHT: large Chinese school assembly with hundreds of students standing in rows. Clean dividing line in the center. Dramatic lighting contrast. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트】
+Pixar-style 3D animation. Split screen showing Korean classroom on the left and Chinese school assembly on the right. Camera slowly zooms out to reveal both sides clearly. Duration: 5 seconds. No text.</div>
+
+<h3>씬 01 - 등교 시간</h3>
+<div class="prompt-box">【이미지 생성 프롬프트 - 한국】
+Pixar-style 3D animated still image. Korean elementary student in casual clothes walking relaxed to school at 8:40 AM on a residential street. Morning sunlight. Full body shot. Calm and autonomous atmosphere. No text.
+
+【이미지 생성 프롬프트 - 중국】
+Pixar-style 3D animated still image. Chinese elementary students in red tracksuit uniforms arriving at school gate around 7:50 AM (Northeast China region). Crowded but orderly school entrance. Early morning light. Full body shot. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트 - 한국】
+Pixar-style 3D animation. Korean student walking calmly to school on a quiet residential street. Gentle tracking shot following from the side. Morning sunlight. Relaxed pace. Duration: 5 seconds.
+
+【Kling AI 모션 프롬프트 - 중국】
+Pixar-style 3D animation. Group of Chinese students in red tracksuit uniforms walking toward school gate in the early morning. Camera follows alongside them. Slightly faster pace than Korean side. Duration: 5 seconds.</div>
+
+<h3>씬 02 - 국기게양식 (升旗仪式)</h3>
+<div class="prompt-box">【이미지 생성 프롬프트 - 한국】
+Pixar-style 3D animated still image. Korean middle school classroom during morning homeroom. Teacher giving casual instructions. Students sitting relaxed. Warm morning light. Informal atmosphere. No text.
+
+【이미지 생성 프롬프트 - 중국】
+Pixar-style 3D animated still image. Wide shot of large Chinese school playground. Hundreds of students in red tracksuit uniforms standing in perfect formation. Five-star red flag slowly rising on tall flagpole. Serious expressions. Strong sense of order and scale. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트 - 중국】
+Pixar-style 3D animation. Hundreds of Chinese students standing at attention on playground. The national flag slowly rises on the flagpole. Camera slowly pushes in from wide shot to medium shot. Morning light. Duration: 5 seconds.</div>
+
+<h3>씬 03 - 교복 + 빨간 스카프 (红领巾)</h3>
+<div class="prompt-box">【이미지 생성 프롬프트 - 한국】
+Pixar-style 3D animated still image. Korean middle school student wearing navy blue school uniform jacket + white shirt + black pleated skirt. Standing relaxed. Clean white background. Full body. No text.
+
+【이미지 생성 프롬프트 - 중국】
+Pixar-style 3D animated still image. Chinese elementary student wearing bright red tracksuit uniform with vivid red neckerchief (红领巾) clearly visible and tied at the neck. Standing proudly. The red scarf is the most prominent element. Clean white background. Full body. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트 - 중국】
+Pixar-style 3D animation. Chinese student in red tracksuit uniform with red neckerchief standing still, then slightly adjusting posture with pride. Subtle camera push-in on the red scarf. Duration: 5 seconds.</div>
+
+<h3>씬 04 - 눈 체조 + 라디오 체조</h3>
+<div class="prompt-box">【이미지 생성 프롬프트 - 눈 보호 체조】
+Pixar-style 3D animated still image. Chinese classroom. Students sitting at desks with eyes closed, pressing acupressure points around their eyes. Peaceful and synchronized movement. Warm lighting. No text.
+
+【이미지 생성 프롬프트 - 라디오 체조】
+Pixar-style 3D animated still image. Large group of Chinese students in red tracksuit uniforms performing synchronized radio calisthenics on playground. Instructor leading at front. Bright daylight. Wide shot showing collective movement. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트 - 눈 보호 체조】
+Pixar-style 3D animation. Students sitting at desks performing eye exercises in synchronized motion. Camera slowly pans across the classroom. Calm atmosphere. Duration: 5 seconds.
+
+【Kling AI 모션 프롬프트 - 라디오 체조】
+Pixar-style 3D animation. Large group of students doing radio calisthenics in perfect sync on the playground. Camera slowly pulls back to show the full formation. Energetic and collective movement. Duration: 5 seconds.</div>
+
+<h3>씬 05 - 대학 군사훈련 (军训)</h3>
+<div class="prompt-box">【이미지 생성 프롬프트 - 한국】
+Pixar-style 3D animated still image. Korean university freshmen in casual clothes gathered on campus during orientation. Relaxed, chatting and laughing. Sunny campus background. Social and free atmosphere. No text.
+
+【이미지 생성 프롬프트 - 중국】
+Pixar-style 3D animated still image. Chinese university freshmen in olive green military uniforms and green caps standing rigidly at attention in perfect rows on a large sun-baked sports field. Serious expressions. Military instructor visible. Harsh midday sunlight. Strong sense of discipline and scale. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트 - 중국】
+Pixar-style 3D animation. Students in olive military uniforms standing at attention in formation. A military instructor walks along the rows inspecting them. Camera slowly pushes in on one female student’s face. Harsh sunlight. Duration: 5 seconds.</div>
+
+<h3>END - 클로징</h3>
+<div class="prompt-box">【이미지 생성 프롬프트】
+Pixar-style 3D animated still image. A Korean student in casual clothes and a Chinese student in red tracksuit uniform with red neckerchief standing side by side. Both looking forward with calm, positive expressions. Warm golden hour lighting. Symbolizing understanding despite differences. Clean simple background. No text.</div>
+
+<div class="prompt-box">【Kling AI 모션 프롬프트】
+Pixar-style 3D animation. Korean student and Chinese student standing side by side. Camera slowly pulls back to reveal both of them clearly. Warm golden lighting. Calm and positive atmosphere. Duration: 5 seconds.</div>
+
+<h2>4. 나레이션 스크립트 (TTS 최종 확정본)</h2>
+<div class="prompt-box">OPEN: "한국과 중국, 같은 동아시아 국가지만 학교 문화는 꽤 다릅니다. 중국 현지 체류 경험을 바탕으로 5가지 차이점을 소개합니다."
+
+01 등교 시간: "중국 초등학교는 전통적으로 7시 30분~8시 등교가 일반적으로, 한국보다 이른 편입니다. 최근 교육부 정책으로 8시 20분으로 조정됐지만 여전히 한국보다 이른 편입니다."
+
+02 국기게양식: "매주 월요일 아침, 전교생이 운동장에 모여 국기게양식을 진행합니다. 국가를 제창하고 선서까지 하는 공식 의식으로, 애국주의 교육이 교육과정에 정식 포함되어 있습니다."
+
+03 교복 + 빨간 스카프: "중국은 초등학교부터 체육복 형태의 교복을 입습니다. 빨간 스카프는 단순한 교복 액세서리가 아니라 중국소년선봉대 소속을 나타내는 상징으로, 이념 교육이 일상에 녹아있는 대표적인 예입니다."
+
+04 눈·라디오 체조: "수업 사이마다 전교생이 눈 보호 체조와 라디오 체조를 함께 합니다. 수십 년째 이어진 국가 건강 정책으로, 한국에는 이에 해당하는 공식 제도가 없습니다."
+
+05 대학 군사훈련: "중국 대학 신입생은 개강 전 1~3주간 남녀 구분 없이 군사훈련을 의무적으로 받습니다. 한국 대학에는 없는 문화로, 국가 주도 교육의 연장선으로 볼 수 있습니다."
+
+END: "국기게양식, 빨간 스카프, 군사훈련까지 — 중국 학교 문화에는 국가 주도의 집단적 교육 방식이 일관되게 녹아있습니다."</div>
+
+<div class="footer">
+    3조 차이나는 퀄리티 · 한중문화콘텐츠탐구 기말 프로젝트<br>
+    2026년 6월
+</div>
+
+</body>
+</html>
